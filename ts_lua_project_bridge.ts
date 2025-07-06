@@ -89,10 +89,16 @@ if (COPY_MEDIA) {
 FS.readdirSync("source/", { recursive: false }).forEach(
 	(item: string | Buffer) => {
 		// Basic checks to make sure nothing explodes.
-		if (item instanceof Buffer) return;
-		if (!FS.statSync(`source/${item}`).isDirectory()) return;
-		if (!FS.existsSync(`source/${item}/mod.conf`))
+		if (item instanceof Buffer) {
+			return;
+		}
+		if (!FS.statSync(`source/${item}`).isDirectory()) {
+			return;
+		}
+
+		if (!FS.existsSync(`source/${item}/mod.conf`)) {
 			throw new Error(`mod ${item} is missing a mod.conf!`);
+		}
 		// So now, if the folder doesn't exist it needs to be made.
 		if (!FS.existsSync(`mods/${item}`)) {
 			FS.mkdirSync(`mods/${item}`);
