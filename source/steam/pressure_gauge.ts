@@ -50,7 +50,11 @@ namespace steam {
 	function manipulatePressureGaugeEntity(
 		pos: Vec3,
 		entity: ObjectRef | null
-	): void {}
+	): void {
+		if (entity == null) {
+			return;
+		}
+	}
 
 	core.register_node("crafter_steam:pressure_gauge", {
 		drawtype: Drawtype.airlike,
@@ -69,6 +73,17 @@ namespace steam {
 		on_construct(position) {
 			getOrCreateEntity(position);
 			timerStart(position);
+		},
+		on_destruct(position) {
+			const hash = core.hash_node_position(position);
+			const ent = pressureGaugeEntities.get(hash);
+
+			if (ent == null) {
+				return;
+			}
+
+			ent.remove();
+			pressureGaugeEntities.delete(hash);
 		},
 	});
 }
