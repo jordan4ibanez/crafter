@@ -43,6 +43,12 @@ namespace steam {
 				return null;
 			}
 		}
+		const param2 = core.get_node(pos).param2;
+		if (param2 != null) {
+			entity.set_yaw(core.dir_to_yaw(core.fourdir_to_dir(param2)));
+		} else {
+			core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
+		}
 		pressureGaugeEntities.set(hash, entity);
 		return entity;
 	}
