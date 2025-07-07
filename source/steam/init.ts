@@ -313,6 +313,14 @@ namespace steam {
 		},
 	});
 
+	/**
+	 * This metadata holds water.
+	 */
+	export interface WaterVesselMeta {
+		/** Percentage. */
+		waterLevel: number;
+	}
+
 	utility.loadFiles([
 		"boiler",
 		"firebox",

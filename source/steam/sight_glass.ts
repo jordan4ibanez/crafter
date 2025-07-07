@@ -53,7 +53,10 @@ namespace steam {
 		return entity;
 	}
 
-	class BoilerShallowMeta extends utility.CrafterMeta {
+	class BoilerShallowMeta
+		extends utility.CrafterMeta
+		implements WaterVesselMeta
+	{
 		/** Percentage. */
 		waterLevel: number = 0;
 	}
