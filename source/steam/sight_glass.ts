@@ -54,6 +54,23 @@ namespace steam {
 		if (entity == null) {
 			return;
 		}
+
+		const param2 = core.get_node(pos).param2;
+		if (param2 == null) {
+			core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
+			return;
+		}
+
+		const dir = core.fourdir_to_dir(param2);
+
+		const newPos = vector.add(pos, dir);
+
+		// Not a steam water vessel.
+		if (
+			core.get_item_group(core.get_node(newPos).name, "water_vessel") <= 0
+		) {
+			return;
+		}
 	}
 
 	core.register_node("crafter_steam:sight_glass", {
