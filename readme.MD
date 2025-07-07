@@ -34,12 +34,26 @@ First you need node/nodejs/npm, if you're on ubuntu it's super outdated so go to
 
 **This is developed with the latest version of nodejs/npm**
 
+#### Nodejs stuff:
+
+##### Simple:
+
+```
+npm install
+```
+
+##### More complicated:
+
+This section is if you want to see what goes on.
+
 Next you need TypeScriptToLua, typescript, and nodejs types.
 Also, you need Lua types for TS or else the compiler doesn't know what's going on.
 Also also, jszip is for creating a release zip.
 ```
 npm install -D typescript-to-lua typescript @types/node lua-types jszip
 ```
+
+#### Compiling:
 
 Next you run ``make clean``.
 
@@ -48,6 +62,12 @@ And if you want to edit the code you can run ``make watch`` in one terminal whil
 I HIGHLY recommend you use ``make``. It automates a BUNCH of things. ``make clean`` is for a complete rebuild along with installing new media (images, music, models, etdc).
 
 No make automation scripts created for windows yet though. It's because I don't run windows.
+
+#### Final thing:
+
+Start the game and create a world named ``debugging`` and you will be able to use the ``make`` command without an error. 
+
+I cannot make a world for you from the command line. It does not exist in the luanti cli.
 
 ### todos
 
