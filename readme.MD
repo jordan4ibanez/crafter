@@ -4,7 +4,11 @@
 
 That is very simple. Static typing and the ability to do type restriction in parameters reduces the mental complexity of development for this engine. If the minetest api changes on a new release, the declaration can be updated. This will cascade the changes through your code and raise errors that you will see before you even think about launching the game engine.
 
-Please note that: There were many languages that compile to the luajit target that I had found during my research into this matter. This one was simply the least shitty. So if you are saying "aw man typescript sucks", just know, across this highly complex and wobbly api, I can see errors before you can.
+Please note that: There were many languages that compile to the luajit target that I had found during my research into this matter. This one was simply the least shitty. So if you are saying "aw man typescript sucks", just know, across this highly complex and wobbly api, I can see errors before you can. 
+
+Not to say that, I can see everything, or, this is bullet proof. But if I try to transform a ``string`` into ``number`` with a variable that has a specified type of ``string``, or perhaps I have a union of ``string | number``. I must check which type it is, or, unsafely throw caution to the wind with a horrific implementation of casting ``value as string``. The latter option is literally me saying "I know better than you, compiler" and therefore exploding the lua environment when something does go wrong. This cascades into where you have callback callbacks or recursive functions. I have a pretty high level of safety and soundness when calling a function. And my favorite part is, even if my declaration file is wrong, welp, I fix it and now I have discovered wrong implementation across anything else in the entire project that uses this component of the api.
+
+And to add onto this: "Oh you have made an error at function X, Y, or Z." At this point I have probably read through the ``api.md`` file around 40 times. Everything that you are reading in this project is not only made by one person, it is entirely hand translated. So if you see that "heh heh, there's an error right there" in the declaration file, I only have one simple request. Open a PR and tell me I am wrong with what the minetest ``api.md`` file states it should be. I can only do so much. I will quadruple check the information and fix it accordingly. Thank you. 
 
 # An important note about why you will not find this on contentdb:
 
