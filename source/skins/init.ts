@@ -1,27 +1,27 @@
 namespace skins {
 	// Binary downloads are required.
-	if (!core.features.httpfetch_binary_data) {
-		throw new Error(
-			"Outdated Minetest Engine detected. Skins mod will not load. This crashes armor."
-		);
-	}
+	// if (!core.features.httpfetch_binary_data) {
+	// 	throw new Error(
+	// 		"Outdated Minetest Engine detected. Skins mod will not load. This crashes armor."
+	// 	);
+	// }
 
-	if (core.request_http_api == null) {
-		throw new Error("This server was not compiled with curl.");
-	}
+	// if (core.request_http_api == null) {
+	// 	throw new Error("This server was not compiled with curl.");
+	// }
 
-	const maybeHTTP: HTTPApi | null = core.request_http_api();
+	// const maybeHTTP: HTTPApi | null = core.request_http_api();
 
-	if (maybeHTTP == null) {
-		throw new Error(`HTTP access is required. Please add this to your minetest.conf:
-	    secure.http_mods = crafter_skins
-	    Skins will not work without this.`);
-	}
+	// if (maybeHTTP == null) {
+	// 	throw new Error(`HTTP access is required. Please add this to your minetest.conf:
+	//     secure.http_mods = crafter_skins
+	//     Skins will not work without this.`);
+	// }
 
-	const http: HTTPApi = maybeHTTP;
+	// const http: HTTPApi = maybeHTTP;
 
-	const id: string = "Typescript Skins Updater";
-	const temppath: string = core.get_worldpath();
+	// const id: string = "Typescript Skins Updater";
+	// const temppath: string = core.get_worldpath();
 
 	// Only create classes if requirements are met.
 
@@ -36,68 +36,68 @@ namespace skins {
 		return data;
 	}
 
-	// Fancy debug wrapper to download an URL.
-	function fetch_url(url: string, callback: (data: string) => void) {
-		http.fetch(
-			{
-				url: url,
-				timeout: 3,
-			},
-			(result: HTTPRequestResult) => {
-				if (result.succeeded) {
-					if (result.code == 404) {
-						return;
-					}
-					if (result.code != 200) {
-						return;
-					}
-					return callback(result.data);
-				} else {
-					return;
-				}
-			}
-		);
-	}
+	// // Fancy debug wrapper to download an URL.
+	// function fetch_url(url: string, callback: (data: string) => void) {
+	// 	http.fetch(
+	// 		{
+	// 			url: url,
+	// 			timeout: 3,
+	// 		},
+	// 		(result: HTTPRequestResult) => {
+	// 			if (result.succeeded) {
+	// 				if (result.code == 404) {
+	// 					return;
+	// 				}
+	// 				if (result.code != 200) {
+	// 					return;
+	// 				}
+	// 				return callback(result.data);
+	// 			} else {
+	// 				return;
+	// 			}
+	// 		}
+	// 	);
+	// }
 	// Gets github raw data of skin.
-	function fetch_function(name: string): void {
-		fetch_url(
-			"https://raw.githubusercontent.com/" +
-				name +
-				"/crafter_skindex/master/skin.png",
-			(data: string) => {
-				if (core.get_player_by_name(name) == null) {
-					return;
-				}
-				const new_temp_path: string =
-					temppath + "/skin_" + name + ".png";
-				const [file, _] = io.open(new_temp_path, "wb");
-				if (!file) {
-					throw new Error(
-						`The skins file for player [${name}] was null.`
-					);
-				}
-				file.write(data);
-				file.close();
-				core.dynamic_add_media({ filepath: new_temp_path }, () => {});
-				const fileName = "skin_" + name + ".png";
-				const player: ObjectRef | null = core.get_player_by_name(name);
-				if (player == null) {
-					core.log(
-						LogLevel.warning,
-						`Player [${name}] disappeared before skin could be applied.`
-					);
-					return;
-				}
-				player.set_properties({
-					textures: [fileName, "blank_skin.png"],
-				});
+	// function fetch_function(name: string): void {
+	// 	fetch_url(
+	// 		"https://raw.githubusercontent.com/" +
+	// 			name +
+	// 			"/crafter_skindex/master/skin.png",
+	// 		(data: string) => {
+	// 			if (core.get_player_by_name(name) == null) {
+	// 				return;
+	// 			}
+	// 			const new_temp_path: string =
+	// 				temppath + "/skin_" + name + ".png";
+	// 			const [file, _] = io.open(new_temp_path, "wb");
+	// 			if (!file) {
+	// 				throw new Error(
+	// 					`The skins file for player [${name}] was null.`
+	// 				);
+	// 			}
+	// 			file.write(data);
+	// 			file.close();
+	// 			core.dynamic_add_media({ filepath: new_temp_path }, () => {});
+	// 			const fileName = "skin_" + name + ".png";
+	// 			const player: ObjectRef | null = core.get_player_by_name(name);
+	// 			if (player == null) {
+	// 				core.log(
+	// 					LogLevel.warning,
+	// 					`Player [${name}] disappeared before skin could be applied.`
+	// 				);
+	// 				return;
+	// 			}
+	// 			player.set_properties({
+	// 				textures: [fileName, "blank_skin.png"],
+	// 			});
 
-				pool.set(name, fileName);
+	// 			pool.set(name, fileName);
 
-				armor.recalculate_armor(player);
-			}
-		);
-	}
+	// 			armor.recalculate_armor(player);
+	// 		}
+	// 	);
+	// }
 
 	// todo: finish capes.
 
@@ -335,7 +335,7 @@ namespace skins {
 				if (!player.is_player()) {
 					return;
 				}
-				fetch_function(player.get_player_name());
+				// fetch_function(player.get_player_name());
 			},
 			player
 		);
