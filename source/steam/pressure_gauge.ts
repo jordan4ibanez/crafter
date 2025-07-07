@@ -1,4 +1,6 @@
 namespace steam {
+	const timerStart = kickOnSteamNodeTimer;
+
 	const pressureGaugeEntities = new Map<number, ObjectRef>();
 
 	class PressureGaugeEntity extends types.Entity {
@@ -45,6 +47,11 @@ namespace steam {
 		return entity;
 	}
 
+	function manipulatePressureGaugeEntity(
+		pos: Vec3,
+		entity: ObjectRef | null
+	): void {}
+
 	core.register_node("crafter_steam:pressure_gauge", {
 		drawtype: Drawtype.airlike,
 		sounds: crafter.stoneSound(),
@@ -52,5 +59,16 @@ namespace steam {
 		paramtype: ParamType1.light,
 		paramtype2: ParamType2["4dir"],
 		sunlight_propagates: true,
+		on_timer(position, elapsed) {
+			manipulatePressureGaugeEntity(
+				position,
+				getOrCreateEntity(position)
+			);
+			timerStart(position);
+		},
+		on_construct(position) {
+			getOrCreateEntity(position);
+			timerStart(position);
+		},
 	});
 }
