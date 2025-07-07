@@ -2,7 +2,7 @@ namespace steam {
 	const pressureGaugeEntities = new Map<number, ObjectRef>();
 
 	class PressureGaugeEntity extends types.Entity {
-		name: string = "crafter_steam:firebox_fire_entity";
+		name: string = "crafter_steam:pressure_gauge_entity";
 		initial_properties: ObjectProperties = {
 			pointable: false,
 			visual: EntityVisual.mesh,
@@ -29,11 +29,14 @@ namespace steam {
 		const hash = core.hash_node_position(pos);
 		let entity = pressureGaugeEntities.get(hash) || null;
 		if (entity == null || !entity.is_valid()) {
-			entity = core.add_entity(pos, "crafter_steam:firebox_fire_entity");
+			entity = core.add_entity(
+				pos,
+				"crafter_steam:pressure_gauge_entity"
+			);
 			if (entity == null || !entity.is_valid()) {
 				core.log(
 					LogLevel.error,
-					`Failed to add firebox entity at ${pos}`
+					`Failed to add pressure gauge entity at ${pos}`
 				);
 				return null;
 			}
