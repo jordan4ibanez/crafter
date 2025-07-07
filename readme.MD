@@ -1,5 +1,10 @@
 ![Crafter](https://raw.githubusercontent.com/jordan4ibanez/crafter/refs/heads/main/menu/header.png)
 
+# Why is this game using typescript?
+
+That is very simple. Static typing and the ability to do type restriction in parameters reduces the mental complexity of development for this engine. If the minetest api changes on a new release, the declaration can be updated. This will cascade the changes through your code and raise errors that you will see before you even think about launching the game engine.
+
+Please note that: There were many languages that compile to the luajit target that I had found during my research into this matter. This one was simply the least shitty. So if you are saying "aw man typescript sucks", just know, across this highly complex and wobbly api, I can see errors before you can.
 
 # An important note about why you will not find this on contentdb:
 
