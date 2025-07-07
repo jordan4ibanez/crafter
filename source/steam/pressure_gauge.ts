@@ -1,7 +1,13 @@
 namespace steam {
 	core.register_node("crafter_steam:pressure_gauge", {
 		drawtype: Drawtype.mesh,
-		tiles: ["steam_sight_glass.png", "steam_sight_glass_water_texture.png"],
+		tiles: [
+			"steam_pressure_gauge_dial.png",
+			"steam_pressure_gauge_bracket.png",
+			"steam_pressure_gauge_inlet.png",
+			"steam_pressure_gauge_needle.png",
+			"stone.png",
+		],
 		mesh: "steam_pressure_gauge.gltf",
 		sounds: crafter.stoneSound(),
 		groups: { stone: 2 },
