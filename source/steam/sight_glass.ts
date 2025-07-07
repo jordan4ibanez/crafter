@@ -47,6 +47,11 @@ namespace steam {
 		return entity;
 	}
 
+	class BoilerShallowMeta extends utility.CrafterMeta {
+		/** Percentage. */
+		waterLevel: number = 0;
+	}
+
 	function manipulateSightGlassEntity(
 		pos: Vec3,
 		entity: ObjectRef | null
@@ -71,6 +76,13 @@ namespace steam {
 		) {
 			return;
 		}
+
+		const meta = utility.getMeta(newPos, BoilerShallowMeta);
+
+		// Convert to linear animation [0.0 - 1.0].
+		const newLevel = meta.waterLevel / 100.0;
+
+		entity.set_animation({ x: newLevel, y: newLevel }, 0, 0, false);
 	}
 
 	core.register_node("crafter_steam:sight_glass", {
