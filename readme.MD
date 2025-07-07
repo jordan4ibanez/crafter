@@ -65,7 +65,7 @@ No make automation scripts created for windows yet though. It's because I don't 
 
 #### Final thing:
 
-Start the game and create a world named ``debugging`` and you will be able to use the ``make`` command without an error. 
+Start the game and create a world named ``debugging`` (don't change settings) and you will be able to use the ``make`` command without an error. 
 
 I cannot make a world for you from the command line. It does not exist in the luanti cli.
 
