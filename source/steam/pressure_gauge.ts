@@ -10,11 +10,11 @@ namespace steam {
 			visual: EntityVisual.mesh,
 			mesh: "steam_pressure_gauge.gltf",
 			textures: [
-				"steam_pressure_gauge_dial.png",
 				"steam_pressure_gauge_bracket.png",
 				"steam_pressure_gauge_inlet.png",
+				"steam_pressure_gauge_housing.png",
 				"steam_pressure_gauge_needle.png",
-				"stone.png",
+				"steam_pressure_gauge_diaphragm.png",
 			],
 			visual_size: vector.create3d(1, 1, 1),
 			static_save: false,
