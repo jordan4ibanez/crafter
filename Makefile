@@ -5,7 +5,7 @@
 defaults:
 	@node --no-warnings=ExperimentalWarning ts_lua_project_bridge.ts
 	@echo Starting Luanti.
-	@luanti --go --gameid crafter --worldname $$HOME/.minetest/worlds/debugging
+	@luanti --go --gameid crafter --world $$HOME/.minetest/worlds/debugging
 
 assets:
 	@node --no-warnings=ExperimentalWarning ts_lua_project_bridge.ts --copy-media
