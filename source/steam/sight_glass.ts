@@ -1,4 +1,10 @@
 namespace steam {
+	//? Implementation note:
+	//?
+	//? All this thing does is tell you how full a boiler is.
+	//?
+	//? It's a bit more important than it probably sounds.
+
 	const timerStart = kickOnSteamNodeTimer;
 
 	const sightGlassEntities = new Map<number, ObjectRef>();
