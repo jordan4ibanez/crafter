@@ -313,7 +313,13 @@ namespace steam {
 		},
 	});
 
-	utility.loadFiles(["boiler", "firebox", "pipe", "sight_glass"]);
+	utility.loadFiles([
+		"boiler",
+		"firebox",
+		"pipe",
+		"sight_glass",
+		"pressure_gauge",
+	]);
 
 	tnt.addDigNodes([
 		"crafter_steam:boiler",
