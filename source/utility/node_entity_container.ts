@@ -37,7 +37,7 @@ namespace utility {
 		}
 
 		/**
-		 * Get an entity from the data.
+		 * Get or create a node entity in the world.
 		 * @param pos The position of the node entity.
 		 * @returns An ObjectRef of the entity. Or, if everything completely fails, null.
 		 */
@@ -69,6 +69,11 @@ namespace utility {
 			return entity;
 		}
 
+		/**
+		 * Delete a node entity from the world.
+		 * @param pos The position of the node entity.
+		 * @returns Nothing.
+		 */
 		delete(pos: Vec3): void {
 			const hash = core.hash_node_position(pos);
 			const entity = this.data.get(hash);
