@@ -46,9 +46,12 @@ namespace utility {
 			let entity = this.data.get(hash) || null;
 
 			let hadToCreateEntity = false;
+
+			// This entity does not exist, so create it.
 			if (entity == null || !entity.is_valid()) {
 				hadToCreateEntity = true;
 				entity = core.add_entity(pos, this.minetestClassName);
+				// Failed to create it.
 				if (entity == null || !entity.is_valid()) {
 					core.log(
 						LogLevel.error,
