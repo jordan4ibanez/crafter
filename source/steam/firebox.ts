@@ -70,7 +70,7 @@ namespace steam {
 	const fireboxEntities = new utility.NodeEntityContainer(FireBoxFireEntity);
 
 	interface AshPanBelowData {
-		exists: boolean;
+		isAshPan: boolean;
 		isOpened: boolean;
 	}
 
@@ -80,7 +80,7 @@ namespace steam {
 		).name;
 
 		return {
-			exists: core.get_item_group(node, "ash_pan") > 0,
+			isAshPan: core.get_item_group(node, "ash_pan") > 0,
 			isOpened: core.get_item_group(node, "opened") > 0,
 		};
 	}
