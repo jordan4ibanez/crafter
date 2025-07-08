@@ -151,7 +151,47 @@ namespace steam {
 
 		const ashPanInfo = getIfAshPanBelow(pos);
 
-		if (ashPanInfo.isAshPan && ashPanInfo.isOpened) {
+		if (!ashPanInfo.isAshPan) {
+			if (fireboxData.coalLevel > 0) {
+				// All the on-fire coal turned into soot instantly.
+				// todo: try to dump soot onto the ground.
+				if (fireboxData.onFire) {
+					fireboxData.onFire = false;
+					fireboxData.coalLevel = 0;
+				} else {
+					// You might lose an item if floating point glitches out.
+					const coalAmount = math.floor(
+						fireboxData.coalLevel / coalIncrement
+					);
+					const outputPos = vector.add(
+						pos,
+						vector.create3d(0, -0.6, 0)
+					);
+					let dropFailure = false;
+					for (const _ of $range(1, coalAmount)) {
+						const entity = core.add_item(outputPos, "crafter:coal");
+						if (entity == null) {
+							dropFailure = true;
+							continue;
+						}
+						const yaw = math.pi * 2 * math.random();
+						entity.set_velocity(
+							vector.create3d(
+								math.cos(yaw),
+								-math.random(),
+								math.cos(yaw)
+							)
+						);
+					}
+					if (dropFailure) {
+						core.log(
+							LogLevel.error,
+							`Player lost their coal at ${pos}`
+						);
+					}
+				}
+			}
+		} else if (ashPanInfo.isAshPan && ashPanInfo.isOpened) {
 			if (fireboxData.coalLevel > 0) {
 			}
 		} else {
