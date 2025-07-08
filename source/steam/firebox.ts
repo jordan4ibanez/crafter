@@ -69,6 +69,24 @@ namespace steam {
 
 	const fireboxEntities = new utility.NodeEntityContainer(FireBoxFireEntity);
 
+	interface AshPanBelowData {
+		exists: boolean;
+		isOpened: boolean;
+	}
+
+	function ashPanBelow(pos: Vec3): AshPanBelowData {
+		const node = core.get_node(
+			vector.add(pos, vector.create3d(0, -1, 0))
+		).name;
+
+		return {
+			exists: core.get_item_group(node, "ash_pan") > 0,
+			isOpened: core.get_item_group(node, "opened") > 0,
+		};
+	}
+
+	function dumpContents(pos: Vec3): void {}
+
 	function manipulateFireEntity(pos: Vec3, entity: ObjectRef | null): void {
 		if (entity == null) {
 			// Cannot continue without an entity.
