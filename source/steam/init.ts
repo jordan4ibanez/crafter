@@ -313,6 +313,10 @@ namespace steam {
 		},
 	});
 
+	//? Metadata interfaces.
+	//?
+	//? These provide some attempt at synchronization of data components.
+
 	/**
 	 * This metadata holds water. (Percent)
 	 */
