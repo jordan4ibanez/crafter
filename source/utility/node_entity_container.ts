@@ -1,4 +1,6 @@
 namespace utility {
+	type constructorFunction = (pos: Vec3, entity: ObjectRef) => void;
+
 	/**
 	 * This class has 2 primary functions:
 	 *
@@ -13,15 +15,50 @@ namespace utility {
 	 * People have been trying to stop UUIDs for entities from being implemented into the game.
 	 * So if you think this is a shitty implementation, go argue with them in the IRC or Github issue
 	 * tracker. Thank you for understanding.
-	 * 
+	 *
 	 * This class will do automatic type inferrence, so you only need to pass the class the entity class.
 	 * The rest of the type information will be handled for you.
 	 */
 	export class NodeEntityContainer<T extends types.Entity> {
 		private readonly minetestClassName: string;
+		private readonly data: Map<number, ObjectRef>;
+		private constructionFunction: constructorFunction = () => {};
 
-		constructor(clazz: new () => T) {
+		constructor(
+			clazz: new () => T,
+			entityConstructorFunction?: () => void
+		) {
+			// Construct an instance because it needs the mt name, not ts.
 			this.minetestClassName = new clazz().name;
+			this.data = new Map<number, ObjectRef>();
+			if (entityConstructorFunction != null) {
+				this.constructionFunction = entityConstructorFunction;
+			}
+		}
+
+		get(pos: Vec3): ObjectRef | null {
+			const hash = core.hash_node_position(pos);
+			let entity = this.data.get(hash) || null;
+
+			let hadToCreateEntity = false;
+			if (entity == null || !entity.is_valid()) {
+				hadToCreateEntity = true;
+				entity = core.add_entity(pos, this.minetestClassName);
+				if (entity == null || !entity.is_valid()) {
+					core.log(
+						LogLevel.error,
+						`Failed to add sight glass entity at ${pos}`
+					);
+					return null;
+				}
+			}
+
+			if (hadToCreateEntity) {
+				this.constructionFunction(pos, entity);
+				this.data.set(hash, entity);
+			}
+
+			return entity;
 		}
 	}
 }
