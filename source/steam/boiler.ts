@@ -39,10 +39,14 @@ namespace steam {
 			const fireBoxData = utility.getMeta(belowPos, FireBoxShallowMeta);
 
 			if (fireBoxData.temperature > boilerData.temperature) {
-				if (fireBoxData.temperature >= 10) {
-					fireBoxData.temperature -= 10;
-					boilerData.temperature += 2;
+				if (fireBoxData.temperature > 212) {
+					fireBoxData.temperature -= 5;
+					boilerData.temperature += 4;
+				} else if (fireBoxData.temperature >= 5) {
+					fireBoxData.temperature -= 2;
+					boilerData.temperature += 1;
 				}
+
 				fireBoxData.write();
 			}
 		}
