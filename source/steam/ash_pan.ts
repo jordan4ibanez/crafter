@@ -12,10 +12,13 @@ namespace steam {
 				"steam_ash_pan_lever.png",
 				"stone.png",
 				"dirt.png",
-				
 			],
 			paramtype2: ParamType2["4dir"],
-			groups: { stone: 2, firebox: 1, heat_vessel: 1 },
+			groups: {
+				stone: 2,
+				ash_pan: 1,
+				opened: currentState == "open" ? 1 : 0,
+			},
 			sounds: crafter.stoneSound(),
 
 			on_timer(position, elapsed) {
