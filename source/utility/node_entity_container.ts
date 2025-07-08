@@ -41,7 +41,7 @@ namespace utility {
 		 * @param pos The position of the node entity.
 		 * @returns An ObjectRef of the entity. Or, if everything completely fails, null.
 		 */
-		get(pos: Vec3): ObjectRef | null {
+		getOrCreate(pos: Vec3): ObjectRef | null {
 			const hash = core.hash_node_position(pos);
 			let entity = this.data.get(hash) || null;
 
