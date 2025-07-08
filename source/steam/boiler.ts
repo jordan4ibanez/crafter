@@ -39,7 +39,16 @@ namespace steam {
 
 			if (fireBoxData.temperature > boilerData.temperature) {
 				//? Boiler gets heated by firebox.
-				if (fireBoxData.temperature > 212) {
+
+				if (fireBoxData.temperature >= 690) {
+					//? Once the boiler is up to full operating temperature, this will create a LOT of heat in the boiler.
+					//? A pressure release valve will be necessary unless the goal is to blow up the boiler.
+					fireBoxData.temperature -= 24;
+					boilerData.temperature += 12;
+				} else if (fireBoxData.temperature > 400) {
+					fireBoxData.temperature -= 12;
+					boilerData.temperature += 6;
+				} else if (fireBoxData.temperature > 212) {
 					fireBoxData.temperature -= 6;
 					boilerData.temperature += 3;
 				} else if (fireBoxData.temperature >= 4) {
