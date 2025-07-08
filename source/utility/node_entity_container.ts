@@ -22,11 +22,14 @@ namespace utility {
 	export class NodeEntityContainer<T extends types.Entity> {
 		private readonly minetestClassName: string;
 		private readonly data: Map<number, ObjectRef>;
-		private constructionFunction: constructorFunction = () => {};
+		private constructionFunction: constructorFunction = (
+			pos: Vec3,
+			entity: ObjectRef
+		) => {};
 
 		constructor(
 			clazz: new () => T,
-			entityConstructorFunction?: () => void
+			entityConstructorFunction?: constructorFunction
 		) {
 			// Construct an instance because it needs the mt name, not ts.
 			this.minetestClassName = new clazz().name;
