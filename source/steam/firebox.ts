@@ -75,7 +75,7 @@ namespace steam {
 		};
 	}
 
-	function ejectCoal(pos: Vec3, wasSoot?: boolean): void {
+	function ejectCoal(pos: Vec3): void {
 		const param2 = core.get_node(pos).param2;
 		if (param2 == null) {
 			core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
@@ -83,23 +83,28 @@ namespace steam {
 		}
 
 		const dir = vector.multiply(core.fourdir_to_dir(param2), -1);
-		const outputPos = vector.add(pos, vector.multiply(dir, 0.5));
+		const outputPos = vector.add(pos, vector.multiply(dir, 0.6));
 
-		if (wasSoot) {
-			// todo: particle spawner and soot item.
-		} else {
-			// todo: particle spawner
+		// todo: particle spawner
 
-			const entity = core.add_item(outputPos, "crafter:coal");
-			if (entity == null) {
-				core.log(LogLevel.error, `Player lost their coal at ${pos}`);
-				return;
-			}
-			entity.set_velocity(dir);
+		const entity = core.add_item(outputPos, "crafter:coal");
+		if (entity == null) {
+			core.log(LogLevel.error, `Player lost their coal at ${pos}`);
+			return;
 		}
-	}
 
-	function dumpContents(pos: Vec3): void {}
+		const vel = vector.create3d(
+			dir.x == 0
+				? math.random() * [-1, 1][math.random(0, 1)]
+				: dir.x * math.random(),
+			0,
+			dir.z == 0
+				? math.random() * [-1, 1][math.random(0, 1)]
+				: dir.z * math.random()
+		);
+
+		entity.set_velocity(vel);
+	}
 
 	function manipulateFireEntity(pos: Vec3, entity: ObjectRef | null): void {
 		if (entity == null) {
@@ -201,6 +206,15 @@ namespace steam {
 			fireboxData.write();
 		} else if (ashPanInfo.isAshPan && ashPanInfo.isOpened) {
 			if (fireboxData.coalLevel > 0) {
+				// This function will automatically eject it at the opening.
+				// This allows for some weird boiler setups.
+				const coalAmount = math.floor(
+					fireboxData.coalLevel / coalIncrement
+				);
+				const posBelow = vector.add(pos, vector.create3d(0, -1, 0));
+				for (const _ of $range(1, coalAmount)) {
+					ejectCoal(posBelow);
+				}
 			}
 		} else {
 			if (fireboxData.onFire) {
