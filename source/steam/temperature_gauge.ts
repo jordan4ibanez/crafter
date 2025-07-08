@@ -55,29 +55,37 @@ namespace steam {
 			return;
 		}
 
-		// const param2 = core.get_node(pos).param2;
-		// if (param2 == null) {
-		// 	core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
-		// 	return;
-		// }
+		const param2 = core.get_node(pos).param2;
+		if (param2 == null) {
+			core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
+			return;
+		}
 
-		// const dir = core.fourdir_to_dir(param2);
+		const dir = core.fourdir_to_dir(param2);
 
-		// const newPos = vector.add(pos, dir);
+		const newPos = vector.add(pos, dir);
 
-		// // Not a steam water vessel.
-		// if (
-		// 	core.get_item_group(core.get_node(newPos).name, "water_vessel") <= 0
-		// ) {
-		// 	return;
-		// }
+		// Not a steam heat vessel.
+		if (
+			core.get_item_group(core.get_node(newPos).name, "heat_vessel") <= 0
+		) {
+			return;
+		}
 
-		// const meta = utility.getMeta(newPos, BoilerShallowMeta);
+		const meta = utility.getMeta(newPos, BoilerTempShallowMeta);
 
-		// // Convert to linear animation [0.0 - 1.0].
-		// const newLevel = meta.waterLevel / 100.0;
+		
 
-		// entity.set_animation({ x: newLevel, y: newLevel }, 0, 0, false);
+		// Convert to linear animation [0.0 - 1.0].
+		let newLevel = (meta.temperature / 212.0) * 0.75;
+
+		print(meta.temperature, newLevel, core.get_node(newPos).name);
+
+		if (newLevel > 1.0) {
+			newLevel = 1.0;
+		}
+
+		entity.set_animation({ x: newLevel, y: newLevel }, 0, 0, false);
 	}
 
 	core.register_node("crafter_steam:temperature_gauge", {
