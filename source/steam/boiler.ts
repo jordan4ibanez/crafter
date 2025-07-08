@@ -25,8 +25,10 @@ namespace steam {
 	}
 
 	// This is encapsulating the rest of the data.
-	//! DO NOT add anything else into this or change this or I will be very angry.
-	class FireBoxShallowMeta extends utility.CrafterMeta {
+	class FireBoxShallowMeta
+		extends utility.CrafterMeta
+		implements HeatedVesselMeta
+	{
 		temperature: number = 0;
 	}
 
