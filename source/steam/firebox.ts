@@ -1,8 +1,6 @@
 namespace steam {
 	const timerStart = kickOnSteamNodeTimer;
 
-	const fireboxEntities = new Map<number, ObjectRef>();
-
 	const fireBoxSounds = new Map<number, number>();
 
 	const fireEntityWidth = (1 / 16) * 14;
@@ -69,27 +67,7 @@ namespace steam {
 	}
 	utility.registerTSEntity(FireBoxFireEntity);
 
-	/**
-	 * At the time of writing this, entities have no UUID.
-	 * This fucking hackjob is getting around this issue.
-	 * FUCK not having UUIDs.
-	 */
-	function getOrCreateEntity(pos: Vec3): ObjectRef | null {
-		const hash = core.hash_node_position(pos);
-		let entity = fireboxEntities.get(hash) || null;
-		if (entity == null || !entity.is_valid()) {
-			entity = core.add_entity(pos, "crafter_steam:firebox_fire_entity");
-			if (entity == null || !entity.is_valid()) {
-				core.log(
-					LogLevel.error,
-					`Failed to add firebox entity at ${pos}`
-				);
-				return null;
-			}
-		}
-		fireboxEntities.set(hash, entity);
-		return entity;
-	}
+	const fireboxEntities = new utility.NodeEntityContainer(FireBoxFireEntity);
 
 	function manipulateFireEntity(pos: Vec3, entity: ObjectRef | null): void {
 		if (entity == null) {
@@ -221,12 +199,15 @@ namespace steam {
 
 			on_timer(position, elapsed) {
 				burnFuelAndDoSideEffects(position, index == 0);
-				manipulateFireEntity(position, getOrCreateEntity(position));
+				manipulateFireEntity(
+					position,
+					fireboxEntities.getOrCreate(position)
+				);
 				timerStart(position);
 			},
 
 			on_construct(position) {
-				getOrCreateEntity(position);
+				fireboxEntities.getOrCreate(position);
 				timerStart(position);
 			},
 
@@ -284,7 +265,10 @@ namespace steam {
 				}
 
 				fireboxData.write();
-				manipulateFireEntity(position, getOrCreateEntity(position));
+				manipulateFireEntity(
+					position,
+					fireboxEntities.getOrCreate(position)
+				);
 
 				if (triggerReturn) {
 					return;
@@ -340,7 +324,10 @@ namespace steam {
 					itemStack.take_item();
 					fireboxData.coalLevel += coalIncrement;
 					fireboxData.write();
-					manipulateFireEntity(position, getOrCreateEntity(position));
+					manipulateFireEntity(
+						position,
+						fireboxEntities.getOrCreate(position)
+					);
 					core.sound_play("steam_coal_add", {
 						pos: pointedThing.under!,
 						pitch: (math.random(80, 99) + math.random()) / 100,
@@ -358,7 +345,10 @@ namespace steam {
 					itemStack.take_item();
 					fireboxData.onFire = true;
 					fireboxData.write();
-					manipulateFireEntity(position, getOrCreateEntity(position));
+					manipulateFireEntity(
+						position,
+						fireboxEntities.getOrCreate(position)
+					);
 					return itemStack;
 				} else if (
 					!fireboxData.isSoot &&
@@ -377,7 +367,10 @@ namespace steam {
 					fireboxData.onFire = false;
 					fireboxData.isSoot = true;
 					fireboxData.write();
-					manipulateFireEntity(position, getOrCreateEntity(position));
+					manipulateFireEntity(
+						position,
+						fireboxEntities.getOrCreate(position)
+					);
 
 					clicker?.set_wielded_item(ItemStack("crafter:bucket"));
 				} else {
@@ -396,15 +389,10 @@ namespace steam {
 			},
 
 			on_destruct(position) {
-				const hash = core.hash_node_position(position);
-				const entity = fireboxEntities.get(hash);
+				fireboxEntities.delete(position);
 
 				const fireboxData = utility.getMeta(position, FireboxMeta);
 
-				if (entity != null) {
-					entity.remove();
-				}
-				fireboxEntities.delete(hash);
 				// If you lit this on fire, say goodbye to your coal.
 				const amount = fireboxData.coalLevel / coalIncrement;
 
@@ -419,6 +407,7 @@ namespace steam {
 					// todo: throw ash
 				}
 
+				const hash = core.hash_node_position(position);
 				const soundHandle = fireBoxSounds.get(hash);
 				if (soundHandle != null) {
 					core.sound_stop(soundHandle);
