@@ -303,7 +303,12 @@ namespace steam {
 			mesh: `steam_firebox_${currentState}.gltf`,
 			tiles: ["steam_firebox.png", "steam_firebox_doors.png"],
 			paramtype2: ParamType2["4dir"],
-			groups: { stone: 2, firebox: 1, heat_vessel: 1, steam_duct_tape: 1 },
+			groups: {
+				stone: 2,
+				firebox: 1,
+				heat_vessel: 1,
+				steam_duct_tape: 1,
+			},
 			sounds: crafter.stoneSound(),
 
 			on_timer(position, elapsed) {
