@@ -74,12 +74,10 @@ namespace steam {
 
 		const meta = utility.getMeta(newPos, BoilerTempShallowMeta);
 
-		
-
 		// Convert to linear animation [0.0 - 1.0].
 		let newLevel = (meta.temperature / 212.0) * 0.75;
 
-		print(meta.temperature, newLevel, core.get_node(newPos).name);
+		// print(meta.temperature, newLevel, core.get_node(newPos).name);
 
 		if (newLevel > 1.0) {
 			newLevel = 1.0;
