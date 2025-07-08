@@ -174,12 +174,11 @@ namespace steam {
 							dropFailure = true;
 							continue;
 						}
-						const yaw = math.pi * 2 * math.random();
 						entity.set_velocity(
 							vector.create3d(
-								math.cos(yaw),
+								math.random() * [-1, 1][math.random(0, 1)],
 								-math.random(),
-								math.cos(yaw)
+								math.random() * [-1, 1][math.random(0, 1)]
 							)
 						);
 					}
@@ -189,8 +188,11 @@ namespace steam {
 							`Player lost their coal at ${pos}`
 						);
 					}
+
+					fireboxData.coalLevel = 0;
 				}
 			}
+			fireboxData.write();
 		} else if (ashPanInfo.isAshPan && ashPanInfo.isOpened) {
 			if (fireboxData.coalLevel > 0) {
 			}
