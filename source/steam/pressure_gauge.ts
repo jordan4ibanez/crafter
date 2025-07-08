@@ -1,8 +1,6 @@
 namespace steam {
 	const timerStart = kickOnSteamNodeTimer;
 
-	const pressureGaugeEntities = new Map<number, ObjectRef>();
-
 	class PressureGaugeEntity extends types.Entity {
 		name: string = "crafter_steam:pressure_gauge_entity";
 		initial_properties: ObjectProperties = {
@@ -22,36 +20,17 @@ namespace steam {
 	}
 	utility.registerTSEntity(PressureGaugeEntity);
 
-	/**
-	 * At the time of writing this, entities have no UUID.
-	 * This fucking hackjob is getting around this issue.
-	 * FUCK not having UUIDs.
-	 */
-	function getOrCreateEntity(pos: Vec3): ObjectRef | null {
-		const hash = core.hash_node_position(pos);
-		let entity = pressureGaugeEntities.get(hash) || null;
-		if (entity == null || !entity.is_valid()) {
-			entity = core.add_entity(
-				pos,
-				"crafter_steam:pressure_gauge_entity"
-			);
-			if (entity == null || !entity.is_valid()) {
-				core.log(
-					LogLevel.error,
-					`Failed to add pressure gauge entity at ${pos}`
-				);
-				return null;
+	const pressureGaugeEntities = new utility.NodeEntityContainer(
+		PressureGaugeEntity,
+		(pos: Vec3, entity: ObjectRef) => {
+			const param2 = core.get_node(pos).param2;
+			if (param2 != null) {
+				entity.set_yaw(core.dir_to_yaw(core.fourdir_to_dir(param2)));
+			} else {
+				core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
 			}
 		}
-		const param2 = core.get_node(pos).param2;
-		if (param2 != null) {
-			entity.set_yaw(core.dir_to_yaw(core.fourdir_to_dir(param2)));
-		} else {
-			core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
-		}
-		pressureGaugeEntities.set(hash, entity);
-		return entity;
-	}
+	);
 
 	function manipulatePressureGaugeEntity(
 		pos: Vec3,
