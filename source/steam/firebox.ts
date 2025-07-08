@@ -110,12 +110,6 @@ namespace steam {
 
 		const fireboxData = utility.getMeta(pos, FireboxMeta);
 
-		if (fireboxData.onFire && fireboxData.isSoot) {
-			throw new Error(
-				`Logic error. Cannot be soot and on fire! At: ${pos}`
-			);
-		}
-
 		if (fireboxData.coalLevel <= 0) {
 			entity.set_properties({
 				visual_size: vector.create3d(0, 0, 0),
@@ -140,11 +134,6 @@ namespace steam {
 				entity.set_properties({
 					textures: onFireTexturing,
 					glow: 10,
-				});
-			} else if (fireboxData.isSoot) {
-				entity.set_properties({
-					textures: sootTexturing,
-					glow: 0,
 				});
 			} else {
 				entity.set_properties({
