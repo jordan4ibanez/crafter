@@ -21,7 +21,10 @@ namespace steam {
 	const maxTempClosed = 700;
 	const maxTempIncreasingClosed = maxTempClosed - temperatureIncrementClosed;
 
-	class FireboxMeta extends utility.CrafterMeta {
+	class FireboxMeta
+		extends utility.CrafterMeta
+		implements HeatedVesselMeta, FiredVesselMeta
+	{
 		onFire: boolean = false;
 		coalLevel: number = 0;
 		temperature: number = 0;

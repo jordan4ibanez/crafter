@@ -349,6 +349,14 @@ namespace steam {
 		pressure: number;
 	}
 
+	/**
+	 * This metadata defines if the vessel is being fired.
+	 */
+	export interface FiredVesselMeta {
+		/** If this vessel is currently active. */
+		onFire: boolean;
+	}
+
 	utility.loadFiles([
 		"boiler",
 		"firebox",
