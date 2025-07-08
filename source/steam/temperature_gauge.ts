@@ -14,8 +14,15 @@ namespace steam {
 			visual: EntityVisual.mesh,
 			mesh: "steam_temperature_gauge.gltf",
 			textures: [
+				// "dirt.png",
+				"steam_temperature_gauge_case.png",
+				"steam_temperature_gauge_diaphragm.png",
+				"steam_temperature_gauge_back_plane.png",
+				"steam_temperature_gauge_inlet.png",
+				"steam_temperature_gauge_needle.png",
+
+				"stone.png",
 				"dirt.png",
-				// "steam_temperature_gauge.png",
 				// "steam_temperature_gauge_water_texture.png",
 			],
 			visual_size: vector.create3d(1, 1, 1),
