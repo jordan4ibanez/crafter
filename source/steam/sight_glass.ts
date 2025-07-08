@@ -7,8 +7,6 @@ namespace steam {
 
 	const timerStart = kickOnSteamNodeTimer;
 
-	const sightGlassEntities = new Map<number, ObjectRef>();
-
 	class SightGlassEntity extends types.Entity {
 		name: string = "crafter_steam:sight_glass_entity";
 		initial_properties: ObjectProperties = {
@@ -25,33 +23,17 @@ namespace steam {
 	}
 	utility.registerTSEntity(SightGlassEntity);
 
-	/**
-	 * At the time of writing this, entities have no UUID.
-	 * This fucking hackjob is getting around this issue.
-	 * FUCK not having UUIDs.
-	 */
-	function getOrCreateEntity(pos: Vec3): ObjectRef | null {
-		const hash = core.hash_node_position(pos);
-		let entity = sightGlassEntities.get(hash) || null;
-		if (entity == null || !entity.is_valid()) {
-			entity = core.add_entity(pos, "crafter_steam:sight_glass_entity");
-			if (entity == null || !entity.is_valid()) {
-				core.log(
-					LogLevel.error,
-					`Failed to add sight glass entity at ${pos}`
-				);
-				return null;
+	const sightGlassEntities = new utility.NodeEntityContainer(
+		SightGlassEntity,
+		(pos: Vec3, entity: ObjectRef) => {
+			const param2 = core.get_node(pos).param2;
+			if (param2 != null) {
+				entity.set_yaw(core.dir_to_yaw(core.fourdir_to_dir(param2)));
+			} else {
+				core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
 			}
 		}
-		const param2 = core.get_node(pos).param2;
-		if (param2 != null) {
-			entity.set_yaw(core.dir_to_yaw(core.fourdir_to_dir(param2)));
-		} else {
-			core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
-		}
-		sightGlassEntities.set(hash, entity);
-		return entity;
-	}
+	);
 
 	class BoilerShallowMeta
 		extends utility.CrafterMeta
@@ -102,23 +84,18 @@ namespace steam {
 		paramtype2: ParamType2["4dir"],
 		sunlight_propagates: true,
 		on_timer(position, elapsed) {
-			manipulateSightGlassEntity(position, getOrCreateEntity(position));
+			manipulateSightGlassEntity(
+				position,
+				sightGlassEntities.getOrCreate(position)
+			);
 			timerStart(position);
 		},
 		on_construct(position) {
-			getOrCreateEntity(position);
+			sightGlassEntities.getOrCreate(position);
 			timerStart(position);
 		},
 		on_destruct(position) {
-			const hash = core.hash_node_position(position);
-			const ent = sightGlassEntities.get(hash);
-
-			if (ent == null) {
-				return;
-			}
-
-			ent.remove();
-			sightGlassEntities.delete(hash);
+			sightGlassEntities.delete(position);
 		},
 	});
 }
