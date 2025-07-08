@@ -306,7 +306,7 @@ namespace steam {
 					fireboxData.temperature -= temperatureDecrementClosed;
 				} else if (fireboxData.temperature <= maxTempIncreasingClosed) {
 					fireboxData.temperature +=
-						temperatureIncrementClosed * chimneyEffect;
+						temperatureIncrementClosed / chimneyEffect;
 				}
 			}
 			fireboxData.write();
