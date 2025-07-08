@@ -1,5 +1,6 @@
 namespace steam {
 	const timerStart = kickOnSteamNodeTimer;
+	const safePressure = maxSafeBoilerPressure;
 
 	class PressureGaugeEntity extends types.Entity {
 		name: string = "crafter_steam:pressure_gauge_entity";
@@ -32,6 +33,13 @@ namespace steam {
 		}
 	);
 
+	class BoilerShallowMeta
+		extends utility.CrafterMeta
+		implements PressureVesselMeta
+	{
+		pressure: number = 0;
+	}
+
 	function manipulatePressureGaugeEntity(
 		pos: Vec3,
 		entity: ObjectRef | null
@@ -39,6 +47,28 @@ namespace steam {
 		if (entity == null) {
 			return;
 		}
+
+		const param2 = core.get_node(pos).param2;
+		if (param2 == null) {
+			core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
+			return;
+		}
+
+		const dir = core.fourdir_to_dir(param2);
+
+		const newPos = vector.add(pos, dir);
+
+		// Not a steam water vessel.
+		if (core.get_item_group(core.get_node(newPos).name, "steam") <= 0) {
+			return;
+		}
+
+		const boilerData = utility.getMeta(newPos, BoilerShallowMeta);
+
+		
+
+
+		// print(maxSafeBoilerPressure, boilerData.pressure);
 	}
 
 	core.register_node("crafter_steam:pressure_gauge", {
