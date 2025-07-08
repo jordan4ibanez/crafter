@@ -309,7 +309,7 @@ namespace steam {
 	//? This is working around an issue where the node timers get corrupted.
 	core.register_lbm({
 		name: "crafter_steam:steam_kicker",
-		nodenames: ["group:steam"],
+		nodenames: ["group:steam", "group:steam_duct_tape"],
 		run_at_every_load: true,
 		action: function (pos: Vec3, node: NodeTable, delta: number): void {
 			kickOnSteamNodeTimer(pos);
