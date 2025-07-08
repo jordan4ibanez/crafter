@@ -1,6 +1,8 @@
 namespace utility {
 	type constructorFunction = (pos: Vec3, entity: ObjectRef) => void;
 
+	const debugClass = true;
+
 	/**
 	 *
 	 * Please ensure that ``static_save`` is set to ``false`` for your entity.
@@ -58,6 +60,9 @@ namespace utility {
 			if (entity == null || !entity.is_valid()) {
 				hadToCreateEntity = true;
 				entity = core.add_entity(pos, this.minetestClassName);
+				if (debugClass) {
+					print(`Created new ${this.minetestClassName} at ${pos}`);
+				}
 				// Failed to create it.
 				if (entity == null || !entity.is_valid()) {
 					core.log(
@@ -69,6 +74,11 @@ namespace utility {
 			}
 
 			if (hadToCreateEntity) {
+				if (debugClass) {
+					print(
+						`Triggered constructor function for ${this.minetestClassName} at ${pos}`
+					);
+				}
 				this.constructionFunction(pos, entity);
 				this.data.set(hash, entity);
 			}
