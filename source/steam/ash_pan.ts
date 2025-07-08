@@ -1,4 +1,63 @@
 namespace steam {
+	const timerStart = kickOnSteamNodeTimer;
+	const sootEntityWidth = (1 / 16) * 14;
+
+	class AshPanEntity extends types.Entity {
+		name: string = "crafter_steam:ash_pan_entity";
+		initial_properties: ObjectProperties = {
+			pointable: false,
+			visual: EntityVisual.cube,
+			textures: [
+				"steam_soot_block.png",
+				"steam_soot_block.png",
+				"steam_soot_block.png",
+				"steam_soot_block.png",
+				"steam_soot_block.png",
+				"steam_soot_block.png",
+			],
+			visual_size: vector.create3d(0, 0, 0),
+			static_save: false,
+		};
+	}
+	utility.registerTSEntity(AshPanEntity);
+
+	const ashPanEntities = new utility.NodeEntityContainer(AshPanEntity);
+
+	class AshPanMeta extends utility.CrafterMeta {
+		sootLevel: number = 0;
+	}
+
+	function manipulateAshPanEntity(pos: Vec3, entity: ObjectRef | null): void {
+		if (entity == null) {
+			// Cannot continue without an entity.
+			core.log(LogLevel.warning, `Missing ash pan entity at ${pos}`);
+			return;
+		}
+
+		const ashPanData = utility.getMeta(pos, AshPanMeta);
+
+		if (ashPanData.sootLevel <= 0) {
+			entity.set_properties({
+				visual_size: vector.create3d(0, 0, 0),
+			});
+		} else {
+			entity.set_pos(
+				vector.create3d(
+					pos.x,
+					pos.y - 0.5 + ashPanData.sootLevel / 2,
+					pos.z
+				)
+			);
+			entity.set_properties({
+				visual_size: vector.create3d(
+					sootEntityWidth,
+					ashPanData.sootLevel,
+					sootEntityWidth
+				),
+			});
+		}
+	}
+
 	const states = ["open", "closed"];
 	for (const index of $range(0, 1)) {
 		const currentState = states[index];
@@ -22,23 +81,19 @@ namespace steam {
 			sounds: crafter.stoneSound(),
 
 			on_timer(position, elapsed) {
-				// burnFuelAndDoSideEffects(position, index == 0);
-				// manipulateFireEntity(
-				// 	position,
-				// 	fireboxEntities.getOrCreate(position)
-				// );
-				// timerStart(position);
+				manipulateAshPanEntity(
+					position,
+					ashPanEntities.getOrCreate(position)
+				);
+				timerStart(position);
 			},
 
 			on_construct(position) {
-				// fireboxEntities.getOrCreate(position);
-				// timerStart(position);
+				ashPanEntities.getOrCreate(position);
+				timerStart(position);
 			},
 
 			on_rightclick(position, node, clicker, itemStack, pointedThing) {
-				// const fireboxData = utility.getMeta(position, FireboxMeta);
-				// const itemStackName = itemStack.get_name();
-
 				//? Open/close doors.
 				const newIndex = (index + 1) % 2;
 				const newState = states[newIndex];
