@@ -68,5 +68,15 @@ namespace utility {
 
 			return entity;
 		}
+
+		delete(pos: Vec3): void {
+			const hash = core.hash_node_position(pos);
+			const entity = this.data.get(hash);
+			if (entity == null) {
+				return;
+			}
+			entity.remove();
+			this.data.delete(hash);
+		}
 	}
 }
