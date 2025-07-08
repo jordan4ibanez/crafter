@@ -93,10 +93,12 @@ namespace steam {
 		sounds: crafter.stoneSound(),
 
 		on_rightclick(position, node, clicker, itemStack, pointedThing) {
-			if (
-				clicker == null ||
-				itemStack.get_name() != "crafter:bucket_water"
-			) {
+			if (clicker == null) {
+				return;
+			}
+			const itemName = itemStack.get_name();
+
+			if (itemName != "crafter:bucket_water") {
 				return;
 			}
 
