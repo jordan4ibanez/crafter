@@ -40,6 +40,8 @@ namespace steam {
 		pressure: number = 0;
 	}
 
+	const dialSafeEndPoint = maxSafeBoilerPressure / 0.75;
+
 	function manipulatePressureGaugeEntity(
 		pos: Vec3,
 		entity: ObjectRef | null
@@ -60,15 +62,24 @@ namespace steam {
 
 		// Not a steam water vessel.
 		if (core.get_item_group(core.get_node(newPos).name, "steam") <= 0) {
+			entity.set_animation({ x: 0, y: 0 }, 0, 0, false);
 			return;
 		}
 
 		const boilerData = utility.getMeta(newPos, BoilerShallowMeta);
 
-		
+		let dialAnimationPoint = boilerData.pressure / dialSafeEndPoint;
 
+		if (dialAnimationPoint > 1) {
+			dialAnimationPoint = 1;
+		}
 
-		// print(maxSafeBoilerPressure, boilerData.pressure);
+		entity.set_animation(
+			{ x: dialAnimationPoint, y: dialAnimationPoint },
+			0,
+			0,
+			false
+		);
 	}
 
 	core.register_node("crafter_steam:pressure_gauge", {
