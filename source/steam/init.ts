@@ -329,7 +329,7 @@ namespace steam {
 	 * This metadata holds heat. (Fahrenheit)
 	 */
 	export interface HeatedVesselMeta {
-		/** Fahrenheit */
+		/** Fahrenheit. */
 		temperature: number;
 	}
 
