@@ -360,6 +360,10 @@ namespace steam {
 				vector.create3d(0, boilerAbove ? 2 : 1, 0)
 			);
 
+			const openedMultiplier = opened ? 2 : 1;
+
+			const windFlowInterference = 0.5 * openedMultiplier;
+
 			if (hasChimney) {
 				const squareDiameter = 0.1;
 				core.add_particlespawner({
@@ -377,18 +381,26 @@ namespace steam {
 						abovePos,
 						vector.create3d(squareDiameter, -0.5, squareDiameter)
 					),
-					minvel: vector.create3d(0, 2.5, 0),
-					maxvel: vector.create3d(0, 4.0, 0),
-					minacc: vector.create3d(0, -0.05, 0),
-					maxacc: vector.create3d(0, -0.1, 0),
+					minvel: vector.create3d(0, 2.5 * openedMultiplier, 0),
+					maxvel: vector.create3d(0, 4.0 * openedMultiplier, 0),
+					minacc: vector.create3d(
+						-windFlowInterference,
+						-0.05,
+						-windFlowInterference
+					),
+					maxacc: vector.create3d(
+						windFlowInterference,
+						-0.1,
+						windFlowInterference
+					),
 				});
 			} else {
 				const squareDiameter = 0.3;
 				core.add_particlespawner({
 					amount: particleAmount / 2,
 					texture: "smoke.png",
-					minexptime: 0.5,
-					maxexptime: 1.5,
+					minexptime: 0.25,
+					maxexptime: 0.55,
 					time: 1,
 					collisiondetection: false,
 					minpos: vector.add(
@@ -399,10 +411,10 @@ namespace steam {
 						abovePos,
 						vector.create3d(squareDiameter, -0.5, squareDiameter)
 					),
-					minvel: vector.create3d(0, 0.25, 0),
-					maxvel: vector.create3d(0, 0.75, 0),
-					minacc: vector.create3d(0, -0.1, 0),
-					maxacc: vector.create3d(0, -0.2, 0),
+					minvel: vector.create3d(0, 0.5 * openedMultiplier, 0),
+					maxvel: vector.create3d(0, 1.0 * openedMultiplier, 0),
+					minacc: vector.create3d(-0.1, -0.1, -0.1),
+					maxacc: vector.create3d(0.1, -0.2, 0.1),
 				});
 			}
 		}
