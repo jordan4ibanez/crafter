@@ -39,11 +39,11 @@ namespace steam {
 
 			if (fireBoxData.temperature > boilerData.temperature) {
 				if (fireBoxData.temperature > 212) {
-					fireBoxData.temperature -= 5;
-					boilerData.temperature += 4;
-				} else if (fireBoxData.temperature >= 5) {
-					fireBoxData.temperature -= 2;
-					boilerData.temperature += 1;
+					fireBoxData.temperature -= 6;
+					boilerData.temperature += 3;
+				} else if (fireBoxData.temperature >= 4) {
+					fireBoxData.temperature -= 4;
+					boilerData.temperature += 2;
 				}
 
 				fireBoxData.write();
@@ -52,8 +52,6 @@ namespace steam {
 
 		if (boilerData.waterLevel <= 0) {
 			boilerData.waterLevel = 0;
-
-			print("pressure:", boilerData.pressure);
 
 			if (boilerData.pressure > dryBoilExplosionPressure) {
 				core.log(
@@ -90,13 +88,13 @@ namespace steam {
 
 		// Boiler is always losing pressure and heat.
 		if (boilerData.temperature > 0) {
-			boilerData.temperature -= 1;
+			boilerData.temperature -= 0.5;
 			if (boilerData.temperature < 0) {
 				boilerData.temperature = 0;
 			}
 		}
 		if (boilerData.pressure > 0) {
-			boilerData.pressure -= 1;
+			boilerData.pressure -= 0.5;
 			if (boilerData.pressure < 0) {
 				boilerData.pressure = 0;
 			}
