@@ -14,8 +14,9 @@ namespace steam {
 			visual: EntityVisual.mesh,
 			mesh: "steam_temperature_gauge.gltf",
 			textures: [
-				"steam_temperature_gauge.png",
-				"steam_temperature_gauge_water_texture.png",
+				"dirt.png",
+				// "steam_temperature_gauge.png",
+				// "steam_temperature_gauge_water_texture.png",
 			],
 			visual_size: vector.create3d(1, 1, 1),
 			static_save: false,
@@ -24,7 +25,15 @@ namespace steam {
 	utility.registerTSEntity(TemperatureGaugeEntity);
 
 	const temperatureGaugeEntities = new utility.NodeEntityContainer(
-		TemperatureGaugeEntity
+		TemperatureGaugeEntity,
+		(pos: Vec3, entity: ObjectRef) => {
+			const param2 = core.get_node(pos).param2;
+			if (param2 != null) {
+				entity.set_yaw(core.dir_to_yaw(core.fourdir_to_dir(param2)));
+			} else {
+				core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
+			}
+		}
 	);
 
 	class BoilerTempShallowMeta
