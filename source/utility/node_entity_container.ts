@@ -1,5 +1,6 @@
 namespace utility {
 	type constructorFunction = (pos: Vec3, entity: ObjectRef) => void;
+	const hashPosition = core.hash_node_position;
 
 	const debugClass = true;
 
@@ -51,7 +52,7 @@ namespace utility {
 		 * @returns An ObjectRef of the entity. Or, if everything completely fails, null.
 		 */
 		getOrCreate(pos: Vec3): ObjectRef | null {
-			const hash = core.hash_node_position(pos);
+			const hash = hashPosition(pos);
 			let entity = this.data.get(hash) || null;
 
 			let hadToCreateEntity = false;
@@ -92,7 +93,7 @@ namespace utility {
 		 * @returns Nothing.
 		 */
 		delete(pos: Vec3): void {
-			const hash = core.hash_node_position(pos);
+			const hash = hashPosition(pos);
 			const entity = this.data.get(hash);
 			if (entity == null) {
 				return;
