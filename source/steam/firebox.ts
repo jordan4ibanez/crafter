@@ -373,6 +373,11 @@ namespace steam {
 					);
 
 					clicker?.set_wielded_item(ItemStack("crafter:bucket"));
+
+					core.sound_play("steam_firebox_extinguish", {
+						pos: position,
+						pitch: (math.random(80, 99) + math.random()) / 100,
+					});
 				} else {
 					//? Open/close doors.
 					const newIndex = (index + 1) % 2;
