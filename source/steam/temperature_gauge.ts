@@ -93,6 +93,15 @@ namespace steam {
 		paramtype: ParamType1.light,
 		paramtype2: ParamType2["4dir"],
 		sunlight_propagates: true,
+		collision_box: {
+			type: Nodeboxtype.fixed,
+			fixed: [-0.35, -0.35, 0.3, 0.35, 0.35, 0.5],
+		},
+		selection_box: {
+			type: Nodeboxtype.fixed,
+			fixed: [-0.35, -0.35, 0.3, 0.35, 0.35, 0.5],
+		},
+
 		on_timer(position, elapsed) {
 			manipulateTemperatureGaugeEntity(
 				position,
