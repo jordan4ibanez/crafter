@@ -141,6 +141,7 @@ namespace steam {
 			stone: 1,
 			pathable: 1,
 			steam: 1,
+			boiler: 1,
 			water_vessel: 1,
 			heat_vessel: 1,
 		},
