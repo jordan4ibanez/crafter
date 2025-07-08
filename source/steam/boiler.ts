@@ -24,7 +24,7 @@ namespace steam {
 		pressure: number = 0;
 	}
 
-	// This is encapsulating the rest of the data.
+	// This is encapsulating the heat data from a firebox.
 	class FireBoxShallowMeta
 		extends utility.CrafterMeta
 		implements HeatedVesselMeta
