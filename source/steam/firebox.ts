@@ -338,6 +338,8 @@ namespace steam {
 			use_texture_alpha: TextureAlpha.clip,
 			mesh: `steam_firebox_${currentState}.gltf`,
 			tiles: ["steam_firebox.png", "steam_firebox_doors.png"],
+			sunlight_propagates: true,
+			paramtype: ParamType1.light,
 			paramtype2: ParamType2["4dir"],
 			groups: {
 				stone: 2,
