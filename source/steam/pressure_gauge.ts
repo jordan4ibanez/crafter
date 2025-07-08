@@ -51,24 +51,16 @@ namespace steam {
 		on_timer(position, elapsed) {
 			manipulatePressureGaugeEntity(
 				position,
-				getOrCreateEntity(position)
+				pressureGaugeEntities.getOrCreate(position)
 			);
 			timerStart(position);
 		},
 		on_construct(position) {
-			getOrCreateEntity(position);
+			pressureGaugeEntities.getOrCreate(position);
 			timerStart(position);
 		},
 		on_destruct(position) {
-			const hash = core.hash_node_position(position);
-			const ent = pressureGaugeEntities.get(hash);
-
-			if (ent == null) {
-				return;
-			}
-
-			ent.remove();
-			pressureGaugeEntities.delete(hash);
+			pressureGaugeEntities.delete(position);
 		},
 	});
 }
