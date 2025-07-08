@@ -326,9 +326,7 @@ namespace steam {
 
 				const itemStackName = itemStack.get_name();
 
-				// Basically gets disabled until you clean out the soot.
 				if (
-					!fireboxData.isSoot &&
 					currentState == "open" &&
 					itemStackName == "crafter:coal" &&
 					fireboxData.coalLevel < 0.6
@@ -362,7 +360,6 @@ namespace steam {
 
 					return itemStack;
 				} else if (
-					!fireboxData.isSoot &&
 					currentState == "open" &&
 					!fireboxData.onFire &&
 					core.get_item_group(itemStackName, "torch") > 0 &&
