@@ -7,8 +7,6 @@ namespace steam {
 
 	const timerStart = kickOnSteamNodeTimer;
 
-	const thermometerEntities = new Map<number, ObjectRef>();
-
 	class ThermometerEntity extends types.Entity {
 		name: string = "crafter_steam:thermometer_entity";
 		initial_properties: ObjectProperties = {
@@ -25,33 +23,9 @@ namespace steam {
 	}
 	utility.registerTSEntity(ThermometerEntity);
 
-	/**
-	 * At the time of writing this, entities have no UUID.
-	 * This fucking hackjob is getting around this issue.
-	 * FUCK not having UUIDs.
-	 */
-	function getOrCreateEntity(pos: Vec3): ObjectRef | null {
-		const hash = core.hash_node_position(pos);
-		let entity = thermometerEntities.get(hash) || null;
-		if (entity == null || !entity.is_valid()) {
-			entity = core.add_entity(pos, "crafter_steam:thermometer_entity");
-			if (entity == null || !entity.is_valid()) {
-				core.log(
-					LogLevel.error,
-					`Failed to add sight glass entity at ${pos}`
-				);
-				return null;
-			}
-		}
-		const param2 = core.get_node(pos).param2;
-		if (param2 != null) {
-			entity.set_yaw(core.dir_to_yaw(core.fourdir_to_dir(param2)));
-		} else {
-			core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
-		}
-		thermometerEntities.set(hash, entity);
-		return entity;
-	}
+	const thermometerEntities = new utility.NodeEntityContainer(
+		ThermometerEntity
+	);
 
 	class BoilerTempShallowMeta
 		extends utility.CrafterMeta
@@ -101,23 +75,18 @@ namespace steam {
 		paramtype2: ParamType2["4dir"],
 		sunlight_propagates: true,
 		on_timer(position, elapsed) {
-			manipulateThermometerEntity(position, getOrCreateEntity(position));
+			manipulateThermometerEntity(
+				position,
+				thermometerEntities.getOrCreate(position)
+			);
 			timerStart(position);
 		},
 		on_construct(position) {
-			getOrCreateEntity(position);
+			thermometerEntities.getOrCreate(position);
 			timerStart(position);
 		},
 		on_destruct(position) {
-			const hash = core.hash_node_position(position);
-			const ent = thermometerEntities.get(hash);
-
-			if (ent == null) {
-				return;
-			}
-
-			ent.remove();
-			thermometerEntities.delete(hash);
+			thermometerEntities.delete(position);
 		},
 	});
 }
