@@ -38,12 +38,35 @@ namespace steam {
 			const fireBoxData = utility.getMeta(belowPos, FireBoxShallowMeta);
 
 			if (fireBoxData.temperature > boilerData.temperature) {
+				//? Boiler gets heated by firebox.
 				if (fireBoxData.temperature > 212) {
 					fireBoxData.temperature -= 6;
 					boilerData.temperature += 3;
 				} else if (fireBoxData.temperature >= 4) {
 					fireBoxData.temperature -= 4;
 					boilerData.temperature += 2;
+				}
+
+				fireBoxData.write();
+			} else {
+				//? Boiler gets cooled by firebox.
+				if (fireBoxData.temperature > 100) {
+					print("branch 1");
+					fireBoxData.temperature += 3;
+					boilerData.temperature -= 2;
+				} else if (fireBoxData.temperature > 0) {
+					print("branch 2");
+					fireBoxData.temperature += 6;
+					boilerData.temperature -= 3;
+				} else {
+					print("branch 3");
+					//? This branch is most likely hit often when the doors are open and the chimney is on.
+					fireBoxData.temperature += 12;
+					boilerData.temperature -= 6;
+				}
+
+				if (boilerData.temperature < 0) {
+					boilerData.temperature = 0;
 				}
 
 				fireBoxData.write();
