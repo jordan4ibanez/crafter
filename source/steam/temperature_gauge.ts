@@ -7,24 +7,24 @@ namespace steam {
 
 	const timerStart = kickOnSteamNodeTimer;
 
-	class ThermometerEntity extends types.Entity {
-		name: string = "crafter_steam:thermometer_entity";
+	class TemperatureGaugeEntity extends types.Entity {
+		name: string = "crafter_steam:temperature_gauge_entity";
 		initial_properties: ObjectProperties = {
 			pointable: false,
 			visual: EntityVisual.mesh,
-			mesh: "steam_thermometer.gltf",
+			mesh: "steam_temperature_gauge.gltf",
 			textures: [
-				"steam_thermometer.png",
-				"steam_thermometer_water_texture.png",
+				"steam_temperature_gauge.png",
+				"steam_temperature_gauge_water_texture.png",
 			],
 			visual_size: vector.create3d(1, 1, 1),
 			static_save: false,
 		};
 	}
-	utility.registerTSEntity(ThermometerEntity);
+	utility.registerTSEntity(TemperatureGaugeEntity);
 
-	const thermometerEntities = new utility.NodeEntityContainer(
-		ThermometerEntity
+	const temperatureGaugeEntities = new utility.NodeEntityContainer(
+		TemperatureGaugeEntity
 	);
 
 	class BoilerTempShallowMeta
@@ -77,16 +77,16 @@ namespace steam {
 		on_timer(position, elapsed) {
 			manipulateThermometerEntity(
 				position,
-				thermometerEntities.getOrCreate(position)
+				temperatureGaugeEntities.getOrCreate(position)
 			);
 			timerStart(position);
 		},
 		on_construct(position) {
-			thermometerEntities.getOrCreate(position);
+			temperatureGaugeEntities.getOrCreate(position);
 			timerStart(position);
 		},
 		on_destruct(position) {
-			thermometerEntities.delete(position);
+			temperatureGaugeEntities.delete(position);
 		},
 	});
 }
