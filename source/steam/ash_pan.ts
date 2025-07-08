@@ -73,6 +73,8 @@ namespace steam {
 				"stone.png",
 				"dirt.png",
 			],
+			sunlight_propagates: true,
+			paramtype: ParamType1.light,
 			paramtype2: ParamType2["4dir"],
 			groups: {
 				stone: 2,
