@@ -1,7 +1,7 @@
 namespace steam {
 	//? Implementation note:
 	//?
-	//? All this thing does is tell you the temperature of the boiler.
+	//? All this thing does is tell you the temperature of the boiler/firebox.
 	//?
 	//? It's a bit more important than it probably sounds.
 
@@ -34,7 +34,7 @@ namespace steam {
 		temperature: number = 0;
 	}
 
-	function manipulateThermometerEntity(
+	function manipulateTemperatureGaugeEntity(
 		pos: Vec3,
 		entity: ObjectRef | null
 	): void {
@@ -67,7 +67,7 @@ namespace steam {
 		// entity.set_animation({ x: newLevel, y: newLevel }, 0, 0, false);
 	}
 
-	core.register_node("crafter_steam:thermometer", {
+	core.register_node("crafter_steam:temperature_gauge", {
 		drawtype: Drawtype.airlike,
 		sounds: crafter.stoneSound(),
 		groups: { stone: 2 },
@@ -75,7 +75,7 @@ namespace steam {
 		paramtype2: ParamType2["4dir"],
 		sunlight_propagates: true,
 		on_timer(position, elapsed) {
-			manipulateThermometerEntity(
+			manipulateTemperatureGaugeEntity(
 				position,
 				temperatureGaugeEntities.getOrCreate(position)
 			);
