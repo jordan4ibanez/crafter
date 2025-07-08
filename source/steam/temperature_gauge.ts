@@ -38,6 +38,8 @@ namespace steam {
 		}
 	);
 
+	// This is called boiler, because I have been working on the boiler code for so long.
+	// It's just easier to understand. Everything that holds a temperature is a boiler.
 	class BoilerTempShallowMeta
 		extends utility.CrafterMeta
 		implements HeatedVesselMeta
