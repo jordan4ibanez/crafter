@@ -341,8 +341,70 @@ namespace steam {
 			fireboxData.coalLevel = 0;
 			fireboxData.onFire = false;
 			fireboxData.write();
+		}
 
-			// todo: drop down into the ash pan.
+		if (fireboxData.onFire) {
+			//? This is done in a very lazy way because it's the easiest way to do it.
+
+			const boilerAbove =
+				core.get_item_group(
+					core.get_node(vector.add(pos, vector.create3d(0, 1, 0)))
+						.name,
+					"boiler"
+				) > 0;
+
+			let particleAmount = math.min(fireboxData.temperature, 100);
+
+			const abovePos = vector.add(
+				pos,
+				vector.create3d(0, boilerAbove ? 2 : 1, 0)
+			);
+
+			if (hasChimney) {
+				const squareDiameter = 0.1;
+				core.add_particlespawner({
+					amount: particleAmount,
+					texture: "smoke.png",
+					minexptime: 0.5,
+					maxexptime: 1.5,
+					time: 1,
+					collisiondetection: false,
+					minpos: vector.add(
+						abovePos,
+						vector.create3d(-squareDiameter, -0.5, -squareDiameter)
+					),
+					maxpos: vector.add(
+						abovePos,
+						vector.create3d(squareDiameter, -0.5, squareDiameter)
+					),
+					minvel: vector.create3d(0, 2.5, 0),
+					maxvel: vector.create3d(0, 4.0, 0),
+					minacc: vector.create3d(0, -0.05, 0),
+					maxacc: vector.create3d(0, -0.1, 0),
+				});
+			} else {
+				const squareDiameter = 0.3;
+				core.add_particlespawner({
+					amount: particleAmount / 2,
+					texture: "smoke.png",
+					minexptime: 0.5,
+					maxexptime: 1.5,
+					time: 1,
+					collisiondetection: false,
+					minpos: vector.add(
+						abovePos,
+						vector.create3d(-squareDiameter, -0.5, -squareDiameter)
+					),
+					maxpos: vector.add(
+						abovePos,
+						vector.create3d(squareDiameter, -0.5, squareDiameter)
+					),
+					minvel: vector.create3d(0, 0.25, 0),
+					maxvel: vector.create3d(0, 0.75, 0),
+					minacc: vector.create3d(0, -0.1, 0),
+					maxacc: vector.create3d(0, -0.2, 0),
+				});
+			}
 		}
 	}
 
