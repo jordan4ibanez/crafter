@@ -38,12 +38,13 @@ namespace steam {
 		if (core.get_item_group(nodeBelow.name, "firebox") > 0) {
 			const fireBoxData = utility.getMeta(belowPos, FireBoxShallowMeta);
 
-			// Thermodynamics is a bitch.
-			if (fireBoxData.temperature >= 10) {
-				fireBoxData.temperature -= 10;
-				boilerData.temperature += 2;
+			if (fireBoxData.temperature > boilerData.temperature) {
+				if (fireBoxData.temperature >= 10) {
+					fireBoxData.temperature -= 10;
+					boilerData.temperature += 2;
+				}
+				fireBoxData.write();
 			}
-			fireBoxData.write();
 		}
 
 		if (boilerData.waterLevel <= 0) {
@@ -70,11 +71,29 @@ namespace steam {
 
 			boilerData.temperature -= temperatureDifference;
 
-			boilerData.pressure += temperatureDifference * 3;
+			if (boilerData.waterLevel > 0) {
+				boilerData.pressure += temperatureDifference * 3;
+			} else {
+				boilerData.pressure += temperatureDifference;
+			}
 			boilerData.waterLevel -= 1;
 			if (boilerData.waterLevel < 0) {
 				// Things might get really bad in a second lol.
 				boilerData.waterLevel = 0;
+			}
+		}
+
+		// Boiler is always losing pressure and heat.
+		if (boilerData.temperature > 0) {
+			boilerData.temperature -= 1;
+			if (boilerData.temperature < 0) {
+				boilerData.temperature = 0;
+			}
+		}
+		if (boilerData.pressure > 0) {
+			boilerData.pressure -= 1;
+			if (boilerData.pressure < 0) {
+				boilerData.pressure = 0;
 			}
 		}
 
