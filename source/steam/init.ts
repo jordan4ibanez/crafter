@@ -9,6 +9,7 @@ namespace steam {
 
 	/** PSI. */
 	export const maxSafeBoilerPressure = 300;
+	export const boilerExplosionPressureWet = 400;
 
 	//? Stationary steam engine.
 
