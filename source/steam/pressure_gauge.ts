@@ -74,7 +74,7 @@ namespace steam {
 	core.register_node("crafter_steam:pressure_gauge", {
 		drawtype: Drawtype.airlike,
 		sounds: crafter.stoneSound(),
-		groups: { stone: 2 },
+		groups: { stone: 2, steam: 1 },
 		paramtype: ParamType1.light,
 		paramtype2: ParamType2["4dir"],
 		sunlight_propagates: true,
