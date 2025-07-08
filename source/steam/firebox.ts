@@ -374,34 +374,6 @@ namespace steam {
 						fireboxEntities.getOrCreate(position)
 					);
 					return itemStack;
-				} else if (
-					!fireboxData.isSoot &&
-					itemStackName == "crafter:bucket_water" &&
-					fireboxData.onFire
-				) {
-					//? Extinguish with water bucket.
-					const hash = core.hash_node_position(position);
-					const data = fireBoxSounds.get(hash);
-
-					if (data != null) {
-						core.sound_stop(data);
-						fireBoxSounds.delete(hash);
-					}
-
-					fireboxData.onFire = false;
-					fireboxData.isSoot = true;
-					fireboxData.write();
-					manipulateFireEntity(
-						position,
-						fireboxEntities.getOrCreate(position)
-					);
-
-					clicker?.set_wielded_item(ItemStack("crafter:bucket"));
-
-					core.sound_play("steam_firebox_extinguish", {
-						pos: position,
-						pitch: (math.random(80, 99) + math.random()) / 100,
-					});
 				} else {
 					//? Open/close doors.
 					const newIndex = (index + 1) % 2;
