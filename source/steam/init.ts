@@ -357,6 +357,7 @@ namespace steam {
 		"pressure_gauge",
 		"temperature_gauge",
 		"ash_pan",
+		"chimney",
 	]);
 
 	tnt.addDigNodes([
