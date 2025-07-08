@@ -2,10 +2,9 @@ namespace steam {
 	const timerStart = kickOnSteamNodeTimer;
 
 	// The boiler explodes if it's empty at this pressure.
-	const dryBoilExplosionPressure = 100;
+	const dryBoilExplosionPressure = boilerExplosionPressureDry;
 
-	// Imperial.
-	const boilingPoint = 212;
+	const boilingPoint = waterBoilingPoint;
 
 	// 1 unit water is 3 units pressure.
 	// What are these units? Well it's very simple
@@ -76,7 +75,8 @@ namespace steam {
 			boilerData.temperature -= temperatureDifference;
 
 			if (boilerData.waterLevel > 0) {
-				boilerData.pressure += temperatureDifference * 3;
+				// The big boiler is much more powerful than this.
+				boilerData.pressure += temperatureDifference * 1.5;
 
 				boilerData.waterLevel -= 0.05;
 				if (boilerData.waterLevel < 0) {
