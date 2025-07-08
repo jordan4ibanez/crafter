@@ -2,6 +2,9 @@ namespace utility {
 	type constructorFunction = (pos: Vec3, entity: ObjectRef) => void;
 
 	/**
+	 * 
+	 * Please ensure that ``static_save`` is set to ``false`` for your entity.
+	 * 
 	 * This class has 2 primary functions:
 	 *
 	 * 1.) It is compensating for nodes not having any animation properties.
