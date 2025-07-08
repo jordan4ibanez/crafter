@@ -144,7 +144,7 @@ namespace steam {
 		}
 	}
 
-	function burnFuelAndDoSideEffects(pos: Vec3, opened: boolean): void {
+	function doFireBoxLogic(pos: Vec3, opened: boolean): void {
 		const fireboxData = utility.getMeta(pos, FireboxMeta);
 		const hash = core.hash_node_position(pos);
 		let soundHandle = fireBoxSounds.get(hash);
@@ -231,7 +231,7 @@ namespace steam {
 			sounds: crafter.stoneSound(),
 
 			on_timer(position, elapsed) {
-				burnFuelAndDoSideEffects(position, index == 0);
+				doFireBoxLogic(position, index == 0);
 				manipulateFireEntity(
 					position,
 					fireboxEntities.getOrCreate(position)
