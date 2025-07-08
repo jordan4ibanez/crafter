@@ -271,10 +271,16 @@ namespace steam {
 				}
 			}
 		}
+
+		// Without a chimney it will heat up slower and burn fuel faster.
+		const hasChimney = false;
+		const chimneyEffect = hasChimney ? 0.5 : 2;
+
 		if (fireboxData.onFire) {
-			fireboxData.coalLevel -= opened
-				? coalBurnRateOpened
-				: coalBurnRateClosed;
+			fireboxData.coalLevel -=
+				(opened ? coalBurnRateOpened : coalBurnRateClosed) *
+				chimneyEffect;
+
 			fireboxData.write();
 			const soundLevel = opened
 				? fireSoundLevelOpened
@@ -292,13 +298,15 @@ namespace steam {
 			if (opened) {
 				// This is a great way to blow up the boiler!
 				if (fireboxData.temperature <= maxTempOpened) {
-					fireboxData.temperature += temperatureIncrementOpened;
+					fireboxData.temperature +=
+						temperatureIncrementOpened / chimneyEffect;
 				}
 			} else {
 				if (fireboxData.temperature > maxTempClosed) {
 					fireboxData.temperature -= temperatureDecrementClosed;
 				} else if (fireboxData.temperature <= maxTempIncreasingClosed) {
-					fireboxData.temperature += temperatureIncrementClosed;
+					fireboxData.temperature +=
+						temperatureIncrementClosed * chimneyEffect;
 				}
 			}
 			fireboxData.write();
@@ -306,9 +314,10 @@ namespace steam {
 			if (fireboxData.temperature > 0) {
 				// Basically this is the "oh shit I ran out of fuel" control.
 				// If you close the doors the firebox will retain more heat.
-				fireboxData.temperature -= opened
-					? temperatureDecrementOpened
-					: temperatureDecrementClosed;
+				fireboxData.temperature -=
+					(opened
+						? temperatureDecrementOpened
+						: temperatureDecrementClosed) / chimneyEffect;
 
 				if (fireboxData.temperature < 0) {
 					fireboxData.temperature = 0;
