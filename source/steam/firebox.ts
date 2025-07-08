@@ -45,15 +45,6 @@ namespace steam {
 		"steam_firebox_fire.png",
 	];
 
-	const sootTexturing = [
-		"steam_soot_block.png",
-		"steam_soot_block.png",
-		"steam_soot_block.png",
-		"steam_soot_block.png",
-		"steam_soot_block.png",
-		"steam_soot_block.png",
-	];
-
 	class FireBoxFireEntity extends types.Entity {
 		name: string = "crafter_steam:firebox_fire_entity";
 		initial_properties: ObjectProperties = {
