@@ -2,3 +2,4 @@ steam_boiler_door: https://freesound.org/people/egomassive/sounds/536781/ CC0
 steam_coal_add: https://freesound.org/people/Fission9/sounds/583310/ CC0
 steam_firebox_on_fire: https://freesound.org/people/AngriestBrad/sounds/495894/ CC0
 steam_soot_shovel: https://freesound.org/people/Anthousai/sounds/398777/ CC0
+steam_firebox_extinguish: https://freesound.org/people/qubodup/sounds/442671/ CC0
