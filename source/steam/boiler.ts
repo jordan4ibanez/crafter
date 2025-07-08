@@ -48,7 +48,7 @@ namespace steam {
 				}
 
 				fireBoxData.write();
-			} else {
+			} else if (boilerData.temperature > 0) {
 				//? Boiler gets cooled by firebox.
 				if (fireBoxData.temperature > 100) {
 					print("branch 1");
