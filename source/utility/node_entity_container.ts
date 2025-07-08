@@ -36,6 +36,11 @@ namespace utility {
 			}
 		}
 
+		/**
+		 * Get an entity from the data.
+		 * @param pos The position of the node entity.
+		 * @returns An ObjectRef of the entity. Or, if everything completely fails, null.
+		 */
 		get(pos: Vec3): ObjectRef | null {
 			const hash = core.hash_node_position(pos);
 			let entity = this.data.get(hash) || null;
@@ -47,7 +52,7 @@ namespace utility {
 				if (entity == null || !entity.is_valid()) {
 					core.log(
 						LogLevel.error,
-						`Failed to add sight glass entity at ${pos}`
+						`Failed to add ${this.minetestClassName} entity at ${pos}`
 					);
 					return null;
 				}
