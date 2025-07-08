@@ -314,11 +314,27 @@ namespace steam {
 	});
 
 	/**
-	 * This metadata holds water.
+	 * This metadata holds water. (Percent)
 	 */
 	export interface WaterVesselMeta {
 		/** Percentage. */
 		waterLevel: number;
+	}
+
+	/**
+	 * This metadata holds heat. (Fahrenheit)
+	 */
+	export interface HeatedVesselMeta {
+		/** Fahrenheit */
+		temperature: number;
+	}
+
+	/**
+	 * This metadata holds pressure. (PSI)
+	 */
+	export interface PressureVesselMeta {
+		/** PSI. */
+		pressure: number;
 	}
 
 	utility.loadFiles([
