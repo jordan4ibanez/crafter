@@ -85,6 +85,30 @@ namespace steam {
 		};
 	}
 
+	function ejectCoal(pos: Vec3, wasSoot?: boolean): void {
+		const param2 = core.get_node(pos).param2;
+		if (param2 == null) {
+			core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
+			return;
+		}
+
+		const dir = vector.multiply(core.fourdir_to_dir(param2), -1);
+		const outputPos = vector.add(pos, vector.multiply(dir, 0.5));
+
+		if (wasSoot) {
+			// todo: particle spawner and soot item.
+		} else {
+			// todo: particle spawner
+
+			const entity = core.add_item(outputPos, "crafter:coal");
+			if (entity == null) {
+				core.log(LogLevel.error, `Player lost their coal at ${pos}`);
+				return;
+			}
+			entity.set_velocity(dir);
+		}
+	}
+
 	function dumpContents(pos: Vec3): void {}
 
 	function manipulateFireEntity(pos: Vec3, entity: ObjectRef | null): void {
@@ -294,36 +318,7 @@ namespace steam {
 					return;
 				}
 
-				const param2 = node.param2;
-				if (param2 == null) {
-					core.log(
-						LogLevel.error,
-						`Param2 dissapeared at ${position}`
-					);
-					return;
-				}
-
-				const dir = vector.multiply(core.fourdir_to_dir(param2), -1);
-				const outputPos = vector.add(
-					position,
-					vector.multiply(dir, 0.5)
-				);
-
-				if (wasSoot) {
-					// todo: particle spawner and soot item.
-				} else {
-					// todo: particle spawner
-
-					const entity = core.add_item(outputPos, "crafter:coal");
-					if (entity == null) {
-						core.log(
-							LogLevel.error,
-							`Player lost their coal at ${position}`
-						);
-						return;
-					}
-					entity.set_velocity(dir);
-				}
+				ejectCoal(position, wasSoot);
 			},
 
 			on_rightclick(position, node, clicker, itemStack, pointedThing) {
