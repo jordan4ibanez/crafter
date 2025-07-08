@@ -151,6 +151,12 @@ namespace steam {
 
 		const ashPanInfo = getIfAshPanBelow(pos);
 
+		// Ashpan handling is extremely stream lined.
+		// 3 reasons:
+		// - This is taking a very long time.
+		// - This is extremely complex.
+		// - I do not want logic bugs.
+
 		if (!ashPanInfo.isAshPan) {
 			if (fireboxData.coalLevel > 0) {
 				// All the on-fire coal turned into soot instantly.
