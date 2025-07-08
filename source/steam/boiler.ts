@@ -13,7 +13,10 @@ namespace steam {
 	// 1 unit water is 3 units pressure.
 	// What are these units? Well it's very simple
 
-	class BoilerMeta extends utility.CrafterMeta {
+	class BoilerMeta
+		extends utility.CrafterMeta
+		implements WaterVesselMeta, HeatedVesselMeta, PressureVesselMeta
+	{
 		temperature: number = 0;
 		/** Percentage. */
 		waterLevel: number = 0;
