@@ -24,7 +24,6 @@ namespace steam {
 	class FireboxMeta extends utility.CrafterMeta {
 		onFire: boolean = false;
 		coalLevel: number = 0;
-		isSoot: boolean = false;
 		temperature: number = 0;
 	}
 
@@ -174,7 +173,6 @@ namespace steam {
 
 		if (ashPanInfo.isAshPan && ashPanInfo.isOpened) {
 			if (fireboxData.coalLevel > 0) {
-				
 			}
 		} else {
 			if (fireboxData.onFire) {
