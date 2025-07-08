@@ -45,7 +45,7 @@ namespace steam {
 			entity.set_pos(
 				vector.create3d(
 					pos.x,
-					pos.y - 0.5 + ashPanData.sootLevel / 2,
+					pos.y - 0.5 + ashPanData.sootLevel / 2 + 1 / 16,
 					pos.z
 				)
 			);
