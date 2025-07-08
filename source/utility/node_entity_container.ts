@@ -1,6 +1,6 @@
 namespace utility {
 	/**
-	 * This class does 2 things:
+	 * This class has 2 primary functions:
 	 * 
 	 * 1.) It is compensating for nodes not having any animation properties.
 	 * Yes, you can have a node with a mesh. But this is static. I do understand that
@@ -8,7 +8,9 @@ namespace utility {
 	 * 
 	 * 2.) It is compensating for entities not having UUIDs. So basically, the entity has to
 	 * have ``static_save`` set to false. Unless you like having a very laggy game of course.
-	 * People have been trying to stop this from being implemented into the game.
+	 * There is no way to realistically track entities that are on disk but not in the world.
+	 * I could probably do this, but, it would suffer from race conditions and all kinds of nonsense.
+	 * People have been trying to stop UUIDs for entities from being implemented into the game.
 	 * So if you think this is a shitty implementation, go argue with them in the IRC or Github issue 
 	 * tracker. Thank you for understanding.
 	 */
