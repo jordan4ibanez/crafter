@@ -356,6 +356,7 @@ namespace steam {
 		"sight_glass",
 		"pressure_gauge",
 		"temperature_gauge",
+		"ash_pan",
 	]);
 
 	tnt.addDigNodes([
