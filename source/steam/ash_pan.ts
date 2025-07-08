@@ -1,6 +1,7 @@
 namespace steam {
 	const timerStart = kickOnSteamNodeTimer;
 	const sootEntityWidth = (1 / 16) * 14;
+	const sootIncrement = 0.05;
 
 	class AshPanEntity extends types.Entity {
 		name: string = "crafter_steam:ash_pan_entity";
@@ -77,6 +78,7 @@ namespace steam {
 				stone: 2,
 				ash_pan: 1,
 				opened: currentState == "open" ? 1 : 0,
+				steam_duct_tape: 1,
 			},
 			sounds: crafter.stoneSound(),
 
