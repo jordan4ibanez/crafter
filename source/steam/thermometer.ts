@@ -7,23 +7,23 @@ namespace steam {
 
 	const timerStart = kickOnSteamNodeTimer;
 
-	const sightGlassEntities = new Map<number, ObjectRef>();
+	const thermometerEntities = new Map<number, ObjectRef>();
 
-	class SightGlassEntity extends types.Entity {
-		name: string = "crafter_steam:sight_glass_entity";
+	class ThermometerEntity extends types.Entity {
+		name: string = "crafter_steam:thermometer_entity";
 		initial_properties: ObjectProperties = {
 			pointable: false,
 			visual: EntityVisual.mesh,
-			mesh: "steam_sight_glass.gltf",
+			mesh: "steam_thermometer.gltf",
 			textures: [
-				"steam_sight_glass.png",
-				"steam_sight_glass_water_texture.png",
+				"steam_thermometer.png",
+				"steam_thermometer_water_texture.png",
 			],
 			visual_size: vector.create3d(1, 1, 1),
 			static_save: false,
 		};
 	}
-	utility.registerTSEntity(SightGlassEntity);
+	utility.registerTSEntity(ThermometerEntity);
 
 	/**
 	 * At the time of writing this, entities have no UUID.
@@ -32,9 +32,9 @@ namespace steam {
 	 */
 	function getOrCreateEntity(pos: Vec3): ObjectRef | null {
 		const hash = core.hash_node_position(pos);
-		let entity = sightGlassEntities.get(hash) || null;
+		let entity = thermometerEntities.get(hash) || null;
 		if (entity == null || !entity.is_valid()) {
-			entity = core.add_entity(pos, "crafter_steam:sight_glass_entity");
+			entity = core.add_entity(pos, "crafter_steam:thermometer_entity");
 			if (entity == null || !entity.is_valid()) {
 				core.log(
 					LogLevel.error,
@@ -49,19 +49,18 @@ namespace steam {
 		} else {
 			core.log(LogLevel.error, `Param2 at ${pos} doesn't exist.`);
 		}
-		sightGlassEntities.set(hash, entity);
+		thermometerEntities.set(hash, entity);
 		return entity;
 	}
 
-	class BoilerShallowMeta
+	class BoilerTempShallowMeta
 		extends utility.CrafterMeta
-		implements WaterVesselMeta
+		implements HeatedVesselMeta
 	{
-		/** Percentage. */
-		waterLevel: number = 0;
+		temperature: number = 0;
 	}
 
-	function manipulateSightGlassEntity(
+	function manipulateThermometerEntity(
 		pos: Vec3,
 		entity: ObjectRef | null
 	): void {
@@ -69,32 +68,32 @@ namespace steam {
 			return;
 		}
 
-		const param2 = core.get_node(pos).param2;
-		if (param2 == null) {
-			core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
-			return;
-		}
+		// const param2 = core.get_node(pos).param2;
+		// if (param2 == null) {
+		// 	core.log(LogLevel.error, `Param2 dissapeared at ${pos}`);
+		// 	return;
+		// }
 
-		const dir = core.fourdir_to_dir(param2);
+		// const dir = core.fourdir_to_dir(param2);
 
-		const newPos = vector.add(pos, dir);
+		// const newPos = vector.add(pos, dir);
 
-		// Not a steam water vessel.
-		if (
-			core.get_item_group(core.get_node(newPos).name, "water_vessel") <= 0
-		) {
-			return;
-		}
+		// // Not a steam water vessel.
+		// if (
+		// 	core.get_item_group(core.get_node(newPos).name, "water_vessel") <= 0
+		// ) {
+		// 	return;
+		// }
 
-		const meta = utility.getMeta(newPos, BoilerShallowMeta);
+		// const meta = utility.getMeta(newPos, BoilerShallowMeta);
 
-		// Convert to linear animation [0.0 - 1.0].
-		const newLevel = meta.waterLevel / 100.0;
+		// // Convert to linear animation [0.0 - 1.0].
+		// const newLevel = meta.waterLevel / 100.0;
 
-		entity.set_animation({ x: newLevel, y: newLevel }, 0, 0, false);
+		// entity.set_animation({ x: newLevel, y: newLevel }, 0, 0, false);
 	}
 
-	core.register_node("crafter_steam:sight_glass", {
+	core.register_node("crafter_steam:thermometer", {
 		drawtype: Drawtype.airlike,
 		sounds: crafter.stoneSound(),
 		groups: { stone: 2 },
@@ -102,7 +101,7 @@ namespace steam {
 		paramtype2: ParamType2["4dir"],
 		sunlight_propagates: true,
 		on_timer(position, elapsed) {
-			manipulateSightGlassEntity(position, getOrCreateEntity(position));
+			manipulateThermometerEntity(position, getOrCreateEntity(position));
 			timerStart(position);
 		},
 		on_construct(position) {
@@ -111,14 +110,14 @@ namespace steam {
 		},
 		on_destruct(position) {
 			const hash = core.hash_node_position(position);
-			const ent = sightGlassEntities.get(hash);
+			const ent = thermometerEntities.get(hash);
 
 			if (ent == null) {
 				return;
 			}
 
 			ent.remove();
-			sightGlassEntities.delete(hash);
+			thermometerEntities.delete(hash);
 		},
 	});
 }
