@@ -20,6 +20,7 @@ namespace utility {
 		"nodebox_helper",
 		"queue",
 		"metadata",
+		"node_entity_container",
 	]);
 
 	export function concat(...input: string[]): string {
