@@ -108,6 +108,47 @@ namespace steam {
 					pitch: (math.random(80, 99) + math.random()) / 100,
 				});
 			},
+
+			on_punch(position, node, puncher, pointedThing) {
+				if (puncher == null) {
+					return;
+				}
+
+				// If it's not a shovel don't bother.
+				if (
+					core.get_item_group(
+						puncher.get_wielded_item().get_name(),
+						"shovel"
+					) <= 0
+				) {
+					return;
+				}
+
+				const ashPanData = utility.getMeta(position, AshPanMeta);
+
+				if (ashPanData.sootLevel <= 0) {
+					return;
+				}
+
+				core.sound_play("steam_soot_shovel", {
+					pos: position,
+					pitch: (math.random(80, 99) + math.random()) / 100,
+				});
+
+				ashPanData.sootLevel -= sootIncrement;
+				ashPanData.sootLevel =
+					math.round(ashPanData.sootLevel * 100) / 100;
+
+				if (ashPanData.sootLevel < 0) {
+					ashPanData.sootLevel = 0;
+				}
+				ashPanData.write();
+
+				manipulateAshPanEntity(
+					position,
+					ashPanEntities.getOrCreate(position)
+				);
+			},
 		});
 	}
 }
