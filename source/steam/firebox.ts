@@ -214,7 +214,44 @@ namespace steam {
 					const posBelow = vector.add(pos, vector.create3d(0, -1, 0));
 					const ashMeta = utility.getMeta(posBelow, AshPanMeta);
 
-					print("soot level:", ashMeta.sootLevel);
+					// This allows for a weird hack where you can store a lit firebox by abusing
+					// a full ash pan. But, I made it so the heat depletes 4 times as fast in this
+					// state. You have completely snuffed out the air inlet to generate coal gas.
+
+					let newDeposit = ashMeta.sootLevel + fireboxData.coalLevel;
+					let remainder = 0;
+
+					// Clean out your ash pan.
+					if (newDeposit > 1.0) {
+						remainder = newDeposit % 1.0;
+						newDeposit = 1.0;
+					}
+
+					fireboxData.coalLevel = remainder;
+
+					if (remainder == 0) {
+						fireboxData.onFire = false;
+						const hash = core.hash_node_position(pos);
+						const id = fireBoxSounds.get(hash);
+
+						if (id != null) {
+							core.sound_stop(id);
+							fireBoxSounds.delete(hash);
+						}
+					} else {
+						fireboxData.temperature -=
+							temperatureIncrementOpened * 2;
+					}
+
+					// If the soot level changed, update immediately.
+					if (ashMeta.sootLevel != newDeposit) {
+						core.get_node_timer(posBelow).set(0, 0);
+					}
+
+					ashMeta.sootLevel = newDeposit;
+
+					ashMeta.write();
+					fireboxData.write();
 				} else {
 					// This function will automatically eject coal at the opening.
 					// This allows for some weird boiler setups.
@@ -222,8 +259,7 @@ namespace steam {
 						fireboxData.coalLevel / coalIncrement
 					);
 					const posBelow = vector.add(pos, vector.create3d(0, -1, 0));
-					for (const i of $range(1, coalAmount)) {
-						print(i);
+					for (const _ of $range(1, coalAmount)) {
 						ejectCoal(posBelow);
 					}
 					fireboxData.coalLevel = 0;
