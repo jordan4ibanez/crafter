@@ -184,6 +184,8 @@ namespace steam {
 		}
 	}
 
+	// todo: this should be detecting the (ash pan/grate) block to see if it was opened to dump the fire.
+
 	// This is a really shitty marine firebox.
 	const states = ["open", "closed"];
 	for (const index of $range(0, 1)) {
