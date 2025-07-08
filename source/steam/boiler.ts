@@ -102,8 +102,14 @@ namespace steam {
 				return;
 			}
 
+			//? Adding water.
+
 			const boilerData = utility.getMeta(position, BoilerMeta);
 
+			// Can't add water if the boiler is full..
+			if (boilerData.waterLevel >= 100) {
+				return;
+			}
 			boilerData.waterLevel += 10;
 			if (boilerData.waterLevel > 100) {
 				boilerData.waterLevel = 100;
