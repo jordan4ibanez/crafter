@@ -270,64 +270,61 @@ namespace steam {
 					fireboxData.write();
 				}
 			}
-		} else {
-			if (fireboxData.onFire) {
-				fireboxData.coalLevel -= opened
-					? coalBurnRateOpened
-					: coalBurnRateClosed;
-				fireboxData.write();
-				const soundLevel = opened
-					? fireSoundLevelOpened
-					: fireSoundLevelClosed;
-				if (soundHandle == null) {
-					soundHandle = core.sound_play("steam_firebox_on_fire", {
-						pos: pos,
-						pitch: (math.random(80, 99) + math.random()) / 100,
-						gain: soundLevel,
-						loop: true,
-					});
-					fireBoxSounds.set(hash, soundHandle);
+		}
+		if (fireboxData.onFire) {
+			fireboxData.coalLevel -= opened
+				? coalBurnRateOpened
+				: coalBurnRateClosed;
+			fireboxData.write();
+			const soundLevel = opened
+				? fireSoundLevelOpened
+				: fireSoundLevelClosed;
+			if (soundHandle == null) {
+				soundHandle = core.sound_play("steam_firebox_on_fire", {
+					pos: pos,
+					pitch: (math.random(80, 99) + math.random()) / 100,
+					gain: soundLevel,
+					loop: true,
+				});
+				fireBoxSounds.set(hash, soundHandle);
+			}
+			core.sound_fade(soundHandle, 1, soundLevel);
+			if (opened) {
+				// This is a great way to blow up the boiler!
+				if (fireboxData.temperature <= maxTempOpened) {
+					fireboxData.temperature += temperatureIncrementOpened;
 				}
-				core.sound_fade(soundHandle, 1, soundLevel);
-				if (opened) {
-					// This is a great way to blow up the boiler!
-					if (fireboxData.temperature <= maxTempOpened) {
-						fireboxData.temperature += temperatureIncrementOpened;
-					}
-				} else {
-					if (fireboxData.temperature > maxTempClosed) {
-						fireboxData.temperature -= temperatureDecrementClosed;
-					} else if (
-						fireboxData.temperature <= maxTempIncreasingClosed
-					) {
-						fireboxData.temperature += temperatureIncrementClosed;
-					}
-				}
-				fireboxData.write();
 			} else {
-				if (fireboxData.temperature > 0) {
-					// Basically this is the "oh shit I ran out of fuel" control.
-					// If you close the doors the firebox will retain more heat.
-					fireboxData.temperature -= opened
-						? temperatureDecrementOpened
-						: temperatureDecrementClosed;
-
-					if (fireboxData.temperature < 0) {
-						fireboxData.temperature = 0;
-					}
-					fireboxData.write();
-				}
-				if (soundHandle != null) {
-					core.sound_stop(soundHandle);
+				if (fireboxData.temperature > maxTempClosed) {
+					fireboxData.temperature -= temperatureDecrementClosed;
+				} else if (fireboxData.temperature <= maxTempIncreasingClosed) {
+					fireboxData.temperature += temperatureIncrementClosed;
 				}
 			}
-			if (fireboxData.coalLevel < 0) {
-				fireboxData.coalLevel = 0;
-				fireboxData.onFire = false;
+			fireboxData.write();
+		} else {
+			if (fireboxData.temperature > 0) {
+				// Basically this is the "oh shit I ran out of fuel" control.
+				// If you close the doors the firebox will retain more heat.
+				fireboxData.temperature -= opened
+					? temperatureDecrementOpened
+					: temperatureDecrementClosed;
+
+				if (fireboxData.temperature < 0) {
+					fireboxData.temperature = 0;
+				}
 				fireboxData.write();
-
-				// todo: drop down into the ash pan.
 			}
+			if (soundHandle != null) {
+				core.sound_stop(soundHandle);
+			}
+		}
+		if (fireboxData.coalLevel < 0) {
+			fireboxData.coalLevel = 0;
+			fireboxData.onFire = false;
+			fireboxData.write();
+
+			// todo: drop down into the ash pan.
 		}
 	}
 
