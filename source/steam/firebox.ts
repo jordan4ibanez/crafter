@@ -321,6 +321,20 @@ namespace steam {
 					fireboxData.coalLevel < 0.6
 				) {
 					//? Add coal.
+
+					// Requires an ash pan that's closed.
+
+					const nodeBelow = core.get_node(
+						vector.add(position, vector.create3d(0, -1, 0))
+					).name;
+
+					if (core.get_item_group(nodeBelow, "ash_pan") <= 0) {
+						return;
+					}
+					if (core.get_item_group(nodeBelow, "open") > 0) {
+						return;
+					}
+
 					// This is specifically designed to allow players to jam in above 0.6 as soon as the fire is lit.
 					// Never change this. It's fun.
 					itemStack.take_item();
