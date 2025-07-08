@@ -7,6 +7,9 @@ namespace steam {
 	//~ Everything that can get hot will universally use the metadata identifier: temperature
 	//~ This is in fahrenheit.
 
+	/** PSI. */
+	export const maxSafeBoilerPressure = 300;
+
 	//? Stationary steam engine.
 
 	const steamEngineEntityMap = new Map<number, ObjectRef>();
