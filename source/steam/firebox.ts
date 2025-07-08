@@ -59,6 +59,10 @@ namespace steam {
 
 	const fireboxEntities = new utility.NodeEntityContainer(FireBoxFireEntity);
 
+	class AshPanMeta extends utility.CrafterMeta {
+		sootLevel: number = 0;
+	}
+
 	interface AshPanBelowData {
 		isAshPan: boolean;
 		isOpened: boolean;
@@ -171,7 +175,7 @@ namespace steam {
 					fireboxData.coalLevel = 0;
 				} else {
 					// You might lose an item if floating point glitches out.
-					const coalAmount = math.floor(
+					const coalAmount = math.round(
 						fireboxData.coalLevel / coalIncrement
 					);
 					const outputPos = vector.add(
@@ -206,14 +210,24 @@ namespace steam {
 			fireboxData.write();
 		} else if (ashPanInfo.isAshPan && ashPanInfo.isOpened) {
 			if (fireboxData.coalLevel > 0) {
-				// This function will automatically eject it at the opening.
-				// This allows for some weird boiler setups.
-				const coalAmount = math.floor(
-					fireboxData.coalLevel / coalIncrement
-				);
-				const posBelow = vector.add(pos, vector.create3d(0, -1, 0));
-				for (const _ of $range(1, coalAmount)) {
-					ejectCoal(posBelow);
+				if (fireboxData.onFire) {
+					const posBelow = vector.add(pos, vector.create3d(0, -1, 0));
+					const ashMeta = utility.getMeta(posBelow, AshPanMeta);
+
+					print("soot level:", ashMeta.sootLevel);
+				} else {
+					// This function will automatically eject coal at the opening.
+					// This allows for some weird boiler setups.
+					const coalAmount = math.round(
+						fireboxData.coalLevel / coalIncrement
+					);
+					const posBelow = vector.add(pos, vector.create3d(0, -1, 0));
+					for (const i of $range(1, coalAmount)) {
+						print(i);
+						ejectCoal(posBelow);
+					}
+					fireboxData.coalLevel = 0;
+					fireboxData.write();
 				}
 			}
 		} else {
