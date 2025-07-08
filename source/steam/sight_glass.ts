@@ -65,6 +65,7 @@ namespace steam {
 		if (
 			core.get_item_group(core.get_node(newPos).name, "water_vessel") <= 0
 		) {
+			entity.set_animation({ x: 0, y: 0 }, 0, 0, false);
 			return;
 		}
 
