@@ -208,7 +208,11 @@ namespace steam {
 				}
 			}
 			fireboxData.write();
-		} else if (ashPanInfo.isAshPan && ashPanInfo.isOpened) {
+		} else if (
+			ashPanInfo.isAshPan &&
+			ashPanInfo.isOpened &&
+			fireboxData.coalLevel > 0
+		) {
 			if (fireboxData.coalLevel > 0) {
 				if (fireboxData.onFire) {
 					const posBelow = vector.add(pos, vector.create3d(0, -1, 0));
