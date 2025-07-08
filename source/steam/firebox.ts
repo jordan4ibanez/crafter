@@ -74,7 +74,7 @@ namespace steam {
 		isOpened: boolean;
 	}
 
-	function ashPanBelow(pos: Vec3): AshPanBelowData {
+	function getIfAshPanBelow(pos: Vec3): AshPanBelowData {
 		const node = core.get_node(
 			vector.add(pos, vector.create3d(0, -1, 0))
 		).name;
@@ -337,14 +337,12 @@ namespace steam {
 
 					// Requires an ash pan that's closed.
 
-					const nodeBelow = core.get_node(
-						vector.add(position, vector.create3d(0, -1, 0))
-					).name;
+					const data = getIfAshPanBelow(position);
 
-					if (core.get_item_group(nodeBelow, "ash_pan") <= 0) {
+					if (!data.isAshPan) {
 						return;
 					}
-					if (core.get_item_group(nodeBelow, "open") > 0) {
+					if (data.isOpened) {
 						return;
 					}
 
