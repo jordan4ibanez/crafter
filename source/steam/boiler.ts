@@ -1,9 +1,6 @@
 namespace steam {
 	const timerStart = kickOnSteamNodeTimer;
 
-	// PSI.
-	const maxPressure = 300;
-
 	// The boiler explodes if it's empty at this pressure.
 	const dryBoilExplosionPressure = 100;
 
