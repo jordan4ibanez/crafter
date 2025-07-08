@@ -12,6 +12,7 @@ namespace steam {
 				"steam_pressure_gauge_bracket.png",
 				"steam_pressure_gauge_inlet.png",
 				"steam_pressure_gauge_housing.png",
+				"steam_pressure_gauge_probe.png",
 				"steam_pressure_gauge_needle.png",
 				"steam_pressure_gauge_diaphragm.png",
 			],
