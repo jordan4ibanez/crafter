@@ -14,11 +14,22 @@ namespace steam {
 	/** Flange Diameter. */
 	const fD: number = pD * 2;
 
+	class PipeMetaData
+		extends utility.CrafterMeta
+		implements PressureVesselMeta
+	{
+		pressure: number = 0;
+	}
+
+	function pipeFlow(pos: Vec3): void {
+		const data = utility.getMeta(pos, PipeMetaData);
+	}
+
 	core.register_node("crafter_steam:pipe", {
 		connects_to: ["group:steam"],
 		tiles: ["steam_pipe.png"],
 		sounds: crafter.stoneSound(),
-		groups: { stone: 2, steam: 1 },
+		groups: { stone: 2, steam: 1, steam_pipe: 1 },
 		drawtype: Drawtype.nodebox,
 		paramtype: ParamType1.light,
 		sunlight_propagates: true,
@@ -26,6 +37,7 @@ namespace steam {
 		inventory_image: "steam_pipe_item.png",
 
 		on_timer(position, elapsed) {
+			pipeFlow(position);
 			timerStart(position);
 		},
 
