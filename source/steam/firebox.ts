@@ -275,14 +275,22 @@ namespace steam {
 			}
 		}
 
+		const boilerAbove =
+			core.get_item_group(
+				core.get_node(vector.add(pos, vector.create3d(0, 1, 0))).name,
+				"boiler"
+			) > 0;
+
 		// Without a chimney it will heat up slower and burn fuel faster.
 		// This also allows you to cool the firebox faster.
 		// This can help you stop the boiler from blowing up.
 		const hasChimney =
+			boilerAbove &&
 			core.get_item_group(
 				core.get_node(vector.add(pos, vector.create3d(0, 2, 0))).name,
 				"chimney"
 			) > 0;
+
 		const chimneyEffect = hasChimney ? 0.5 : 2;
 
 		if (fireboxData.onFire) {
@@ -345,13 +353,6 @@ namespace steam {
 
 		if (fireboxData.onFire) {
 			//? This is done in a very lazy way because it's the easiest way to do it.
-
-			const boilerAbove =
-				core.get_item_group(
-					core.get_node(vector.add(pos, vector.create3d(0, 1, 0)))
-						.name,
-					"boiler"
-				) > 0;
 
 			let particleAmount = math.min(fireboxData.temperature, 100);
 
