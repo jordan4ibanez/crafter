@@ -373,5 +373,9 @@ namespace steam {
 		"crafter_steam:firebox_open",
 		"crafter_steam:firebox_closed",
 		"crafter_steam:sight_glass",
+		"crafter_steam:pressure_gauge",
+		"crafter_steam:temperature_gauge",
+		"crafter_steam:ash_pan_open",
+		"crafter_steam:ash_pan_closed",
 	]);
 }
