@@ -152,7 +152,7 @@ namespace steam {
 
 			if (boilerData.pressure > 300) {
 				// It's kinda dumb to get the pressure this high but you can do it.
-				outputPSI = 40;
+				outputPSI = 30;
 			} else if (boilerData.pressure > 250) {
 				outputPSI = 20;
 			} else if (boilerData.pressure > 200) {
