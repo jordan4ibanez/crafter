@@ -30,7 +30,7 @@ namespace steam {
 		vector.create3d(0, 1, 0),
 	];
 
-	function pipeFlow(pos: Vec3): void {
+	function pipePressureFlow(pos: Vec3): void {
 		const data = utility.getMeta(pos, PipeMetaData);
 
 		print("pipe data:", data.pressure);
@@ -53,7 +53,7 @@ namespace steam {
 		inventory_image: "steam_pipe_item.png",
 
 		on_timer(position, elapsed) {
-			pipeFlow(position);
+			pipePressureFlow(position);
 			timerStart(position);
 		},
 
