@@ -23,6 +23,13 @@ namespace steam {
 
 	function pipeFlow(pos: Vec3): void {
 		const data = utility.getMeta(pos, PipeMetaData);
+
+		print("pipe data:", data.pressure);
+
+		if (data.pressure > 350) {
+			core.log(LogLevel.error, "pipe explosion implementation missing");
+			core.dig_node(pos);
+		}
 	}
 
 	core.register_node("crafter_steam:pipe", {
