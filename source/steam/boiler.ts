@@ -28,6 +28,20 @@ namespace steam {
 		temperature: number = 0;
 	}
 
+	const pressureOutDirs: Vec3[] = [
+		vector.create3d(-1, 0, 0),
+		vector.create3d(1, 0, 0),
+		vector.create3d(0, 0, -1),
+		vector.create3d(0, 0, 1),
+	];
+
+	class PipeMetaData
+		extends utility.CrafterMeta
+		implements PressureVesselMeta
+	{
+		pressure: number = 0;
+	}
+
 	function boil(pos: Vec3): void {
 		const boilerData = utility.getMeta(pos, BoilerMeta);
 
@@ -126,6 +140,46 @@ namespace steam {
 			boilerData.pressure -= 0.5;
 			if (boilerData.pressure < 0) {
 				boilerData.pressure = 0;
+			}
+		}
+
+		if (boilerData.pressure > 0) {
+			const outPos = vector.create3d();
+
+			// This is simplified.
+
+			let outputPSI = 0;
+
+			if (boilerData.pressure > 300) {
+				// It's kinda dumb to get the pressure this high but you can do it.
+				outputPSI = 40;
+			} else if (boilerData.pressure > 250) {
+				outputPSI = 20;
+			} else if (boilerData.pressure > 200) {
+				outputPSI = 10;
+			} else if (boilerData.pressure > 100) {
+				outputPSI = 5;
+			}
+
+			let didOutput = false;
+
+			for (const dir of pressureOutDirs) {
+				outPos.x = pos.x + dir.x;
+				outPos.y = pos.y + dir.y;
+				outPos.z = pos.z + dir.z;
+				const name = core.get_node(outPos).name;
+				const isSteamPipe = core.get_item_group(name, "steam_pipe") > 0;
+				if (!isSteamPipe) {
+					continue;
+				}
+				const pipeData = utility.getMeta(outPos, PipeMetaData);
+				pipeData.pressure += outputPSI;
+				pipeData.write();
+				didOutput = true;
+			}
+
+			if (didOutput) {
+				boilerData.pressure -= outputPSI;
 			}
 		}
 
