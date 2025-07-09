@@ -97,6 +97,10 @@ namespace steam {
 				timerStart(position);
 			},
 
+			on_destruct(position) {
+				ashPanEntities.delete(position)
+			},
+
 			on_rightclick(position, node, clicker, itemStack, pointedThing) {
 				//? Open/close doors.
 				const newIndex = (index + 1) % 2;
