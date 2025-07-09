@@ -33,7 +33,15 @@ namespace steam {
 	function pipePressureFlow(pos: Vec3): void {
 		const data = utility.getMeta(pos, PipeMetaData);
 
-		print("pipe data:", data.pressure);
+		// There's nothing to do.
+		if (data.pressure <= 0) {
+			// But, catch a vacuum.
+			if (data.pressure < 0) {
+				data.pressure = 0;
+				data.write();
+			}
+			return;
+		}
 
 		if (data.pressure > 350) {
 			core.log(LogLevel.error, "pipe explosion implementation missing");
