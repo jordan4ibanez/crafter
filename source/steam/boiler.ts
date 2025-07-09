@@ -170,8 +170,6 @@ namespace steam {
 				boilerData.waterLevel = 100;
 			}
 
-			print("waterLevel: ", boilerData.waterLevel);
-
 			boilerData.write();
 			itemStack.set_name("crafter:bucket");
 			clicker.set_wielded_item(itemStack);
