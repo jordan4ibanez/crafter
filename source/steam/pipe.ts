@@ -21,6 +21,15 @@ namespace steam {
 		pressure: number = 0;
 	}
 
+	const pressureOutDirs: Vec3[] = [
+		vector.create3d(-1, 0, 0),
+		vector.create3d(1, 0, 0),
+		vector.create3d(0, 0, -1),
+		vector.create3d(0, 0, 1),
+		vector.create3d(0, -1, 0),
+		vector.create3d(0, 1, 0),
+	];
+
 	function pipeFlow(pos: Vec3): void {
 		const data = utility.getMeta(pos, PipeMetaData);
 
