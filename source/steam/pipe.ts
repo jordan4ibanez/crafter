@@ -47,6 +47,16 @@ namespace steam {
 			core.log(LogLevel.error, "pipe explosion implementation missing");
 			core.dig_node(pos);
 		}
+
+		const lookPos = vector.create3d();
+
+		for (const dir of pressureOutDirs) {
+			lookPos.x = pos.x + dir.x;
+			lookPos.y = pos.y + dir.y;
+			lookPos.z = pos.z + dir.z;
+
+			
+		}
 	}
 
 	core.register_node("crafter_steam:pipe", {
